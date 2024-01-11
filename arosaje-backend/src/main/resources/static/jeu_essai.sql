@@ -1,18 +1,27 @@
-INSERT INTO user (code_postal, numero, rue, ville, first_name, last_name, mail, password, phone, pseudo)
-VALUES
-    ('75001', '10', 'Rue de Rivoli', 'Paris', 'Alice', 'Dubois', 'alice.dubois@example.com', 'password123', '0123456781', 'alice01'),
-    ('69002', '25', 'Rue de la République', 'Lyon', 'Bruno', 'Leroy', 'bruno.leroy@example.com', 'password456', '0123456782', 'bruno69'),
-    ('13003', '40', 'La Canebière', 'Marseille', 'Clara', 'Martin', 'clara.martin@example.com', 'password789', '0123456783', 'claramars'),
-    ('31000', '55', 'Rue de Metz', 'Toulouse', 'David', 'Bernard', 'david.bernard@example.com', 'password101', '0123456784', 'david31'),
-    ('33000', '70', 'Rue Sainte-Catherine', 'Bordeaux', 'Eva', 'Petit', 'eva.petit@example.com', 'password202', '0123456785', 'eva33');
+INSERT INTO users (username, firstname, lastname, email, phone, street, city, zip, x, y, password) VALUES
+('johndoe', 'John', 'Doe', 'john.doe@example.com', '1234567890', '1234 Elm Street', 'Anytown', '12345', 35.6895, 139.6917, 'password123'),
+('janedoe', 'Jane', 'Doe', 'jane.doe@example.com', '0987654321', '5678 Oak Street', 'Anycity', '54321', 40.7128, -74.0060, 'password321');
 
-INSERT INTO plant (id_user, description, name)
-VALUES
-    (1, 'Petite plante verte adaptée aux espaces intérieurs', 'Ficus'),
-    (1, 'Plante grasse nécessitant de l\'attention', 'Cactus'),
-    (2, 'Fleur colorée parfaite pour les jardins', 'Tulipe'),
-    (3, 'Arbuste à fleurs idéal pour les haies', 'Hortensia'),
-    (4, 'Plante d\'intérieur à grandes feuilles', 'Monstera'),
-    (4, 'Plante aromatique pour la cuisine', 'Basilic'),
-    (5, 'Fleur élégante et délicate', 'Orchidée'),
-    (5, 'Plante grimpante à fleurs', 'Clématite');
+INSERT INTO plants (user_id, name, species, care_instructions) VALUES
+(1, 'Ficus', 'Ficus benjamina', 'Arrosez régulièrement.'),
+(1, 'Cactus', 'Cactaceae', 'Peu d\'eau nécessaire.');
+
+INSERT INTO tickets (user_id, title, description, status) VALUES
+(1, 'Problème avec mon ficus', 'Les feuilles jaunissent.', 'ouvert'),
+(2, 'Conseil pour cactus', 'Quel engrais utiliser ?', 'ouvert');
+
+INSERT INTO guardianships (plant_id, guardian_user_id, start_date, end_date, status) VALUES
+(1, 2, '2023-01-01', '2023-01-15', 'actif'),
+(2, 1, '2023-02-01', '2023-02-15', 'actif');
+
+INSERT INTO messages (sender_id, receiver_id, guardianship_id, content) VALUES
+(1, 2, 1, 'Pouvez-vous arroser le ficus demain ?'),
+(2, 1, 2, 'Le cactus va bien, ne vous inquiétez pas.');
+
+INSERT INTO ticket_comments (ticket_id, user_id, comment) VALUES
+(1, 2, 'Avez-vous vérifié l\'humidité du sol ?'),
+(2, 1, 'Un engrais à faible teneur en azote est recommandé.');
+
+INSERT INTO photos (reference_id, reference_type, image_blob) VALUES
+(1, 'plant', '...blob data...'),
+(1, 'ticket', '...blob data...');
