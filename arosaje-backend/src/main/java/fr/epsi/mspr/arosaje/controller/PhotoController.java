@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * REST Controller for managing photos.
- */
+
 @RestController
 @RequestMapping("/api/photos")
 public class PhotoController {
@@ -19,11 +17,6 @@ public class PhotoController {
     @Autowired
     private PhotoService photoService;
 
-    /**
-     * GET /api/photos : get all the photos.
-     *
-     * @return the list of photos.
-     */
     @GetMapping
     public List<Photo> getAllPhotos() {
         return photoService.findAll();
