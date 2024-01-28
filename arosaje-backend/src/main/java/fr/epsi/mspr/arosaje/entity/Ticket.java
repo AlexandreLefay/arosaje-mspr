@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "tickets")
@@ -34,5 +35,6 @@ public class Ticket {
     @Column(name = "updated_at", insertable = false, updatable = false)
     private LocalDateTime updatedAt;
 
-    // Getters and setters...
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
+    private Set<TicketComment> comments;
 }
