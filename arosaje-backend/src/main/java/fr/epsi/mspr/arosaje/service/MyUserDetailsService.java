@@ -13,12 +13,22 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for user authentication that implements the UserDetailsService interface.
+ */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Loads the user by username. Used by Spring Security.
+     *
+     * @param username The username of the user.
+     * @return UserDetails containing user's information and authorities.
+     * @throws UsernameNotFoundException if the user is not found.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
@@ -29,6 +39,12 @@ public class MyUserDetailsService implements UserDetailsService {
                 getAuthorities(user));
     }
 
+    /**
+     * Converts the roles associated with a User entity to Spring Security GrantedAuthority objects.
+     *
+     * @param user The user whose roles are to be converted.
+     * @return A collection of GrantedAuthority objects.
+     */
     private Collection<? extends GrantedAuthority> getAuthorities(User user) {
         return user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
