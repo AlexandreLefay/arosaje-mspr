@@ -1,5 +1,8 @@
 package fr.epsi.mspr.arosaje.entity.dto.login;
 
+import lombok.Getter;
+
+@Getter
 public class LoginResponse {
     private final String jwt;
 
