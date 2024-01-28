@@ -20,5 +20,7 @@ public class TicketResponseDTO {
     private String status;
     private LocalDateTime createdAt;
     private Set<TicketCommentDTO> comments;
+    private Long userId;
+
 
 }

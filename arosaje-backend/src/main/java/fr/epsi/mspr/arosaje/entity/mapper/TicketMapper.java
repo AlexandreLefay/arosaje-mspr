@@ -21,6 +21,7 @@ public interface TicketMapper {
      * @param ticket The Ticket entity to be converted.
      * @return The corresponding TicketResponseDTO.
      */
+    @Mapping(source = "user.id", target = "userId")
     TicketResponseDTO ticketToTicketResponseDTO(Ticket ticket);
 
     /**
