@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, Text} from 'react-native';
-import {getPlants} from "../../api/plant/PlantAPI";
+import {getPlants} from "../../api/plantAPI/PlantAPI";
 
 function PlantScreen() {
     const [plants, setPlants] = useState([]);
