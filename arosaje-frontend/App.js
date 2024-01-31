@@ -5,9 +5,9 @@ import Navbar from "./src/components/Navbar";
 export default function App() {
   return (
     <View style={styles.container}>
-      <Navbar/>
       <Text>My react native app!</Text>
       <StatusBar style="auto" />
+        <Navbar/>
     </View>
   );
 }
