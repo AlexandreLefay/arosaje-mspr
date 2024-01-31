@@ -3,6 +3,8 @@ import { View, TextInput, Button, StyleSheet, Image, TouchableOpacity, Text } fr
 import * as ImagePicker from 'expo-image-picker';
 
 const PlantForm = ({ navigation }) => {
+
+  const [image, setImage] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     species: '',
@@ -10,9 +12,11 @@ const PlantForm = ({ navigation }) => {
     imageUri: null,
   });
 
-  const handleInputChange = (inputName, inputValue) => {
-    setFormData({ ...formData, [inputName]: inputValue });
-  };
+const handleInputChange = (inputName, inputValue) => {
+  const newFormData = { ...formData, [inputName]: inputValue };
+  setFormData(newFormData);
+};
+
 
   const pickImage = async () => {
     // Demander la permission d'accéder à la galerie de photos
@@ -23,13 +27,22 @@ const PlantForm = ({ navigation }) => {
     }
     
     // Sélectionner l'image
-    const pickerResult = await ImagePicker.launchImageLibraryAsync();
-    if (pickerResult.cancelled === true) {
-      return;
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
     }
 
     // Mise à jour du state avec l'URI de l'image
-    handleInputChange('imageUri', pickerResult.uri);
+    handleInputChange('imageUri', result.assets[0].uri);
   };
 
   const handleSubmit = () => {
@@ -59,15 +72,19 @@ const PlantForm = ({ navigation }) => {
         multiline
       />
 
-      <TouchableOpacity onPress={pickImage} style={styles.button}>
+      {/* <TouchableOpacity onPress={pickImage} style={styles.button}>
         <Text>{formData.imageUri ? 'Changer' : 'Ajouter'} la photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={pickImage} style={styles.button}>
-        <Button title="Prendre une photo" onPress={() => navigation.navigate('PlantPhoto')} />
-      </TouchableOpacity>
-      {formData.imageUri && (
-        <Image source={{ uri: formData.imageUri }} style={styles.image} />
-      )}
+      </TouchableOpacity> */}
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Button title="Ajouter une image" onPress={pickImage} />
+        {image &&
+          <Image 
+            source={{ uri: image }} 
+            style={{ width: 200, height: 200 }}
+          />
+        }
+      </View>
+      <Button title="Prendre une photo" onPress={() => navigation.navigate('PlantPhoto')} />
       <Button title="Ajouter" onPress={handleSubmit} />
     </View>
   );
