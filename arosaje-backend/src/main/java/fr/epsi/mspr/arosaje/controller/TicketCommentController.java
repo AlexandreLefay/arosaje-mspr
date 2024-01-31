@@ -15,6 +15,7 @@ import java.util.List;
  * Provides endpoints for creating, retrieving, updating, and deleting ticket comments.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/api/tickets/{ticketId}/comments")
 public class TicketCommentController {
 

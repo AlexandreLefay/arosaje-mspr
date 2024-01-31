@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/api/plants")
 public class PlantController {
 

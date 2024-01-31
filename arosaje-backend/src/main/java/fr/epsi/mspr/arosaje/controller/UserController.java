@@ -14,6 +14,7 @@ import java.util.List;
  * Provides endpoints for creating, retrieving, updating, and deleting users.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/api/users")
 public class UserController {
 
