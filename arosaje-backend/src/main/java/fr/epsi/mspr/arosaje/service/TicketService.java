@@ -2,15 +2,19 @@ package fr.epsi.mspr.arosaje.service;
 
 
 import fr.epsi.mspr.arosaje.entity.Ticket;
+import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketResponseDTO;
 import fr.epsi.mspr.arosaje.entity.mapper.TicketMapper;
 import fr.epsi.mspr.arosaje.repository.TicketRepository;
+import fr.epsi.mspr.arosaje.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.rmi.server.LogStream.log;
 
 /**
  * Service for handling ticket data operations.
@@ -21,6 +25,9 @@ public class TicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     /**
      * Creates a new ticket from the given TicketCreationDTO.
      *
@@ -29,9 +36,17 @@ public class TicketService {
      */
     public TicketResponseDTO createTicket(TicketCreationDTO ticketCreationDTO) {
         Ticket ticket = TicketMapper.INSTANCE.ticketCreationDTOToTicket(ticketCreationDTO);
+
+        User user = userRepository.findById(ticketCreationDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        ticket.setUser(user);
+        ticket.setStatus("Ouvert");
+
         Ticket savedTicket = ticketRepository.save(ticket);
         return TicketMapper.INSTANCE.ticketToTicketResponseDTO(savedTicket);
     }
+
 
     /**
      * Retrieves all tickets.
@@ -58,6 +73,19 @@ public class TicketService {
     }
 
     /**
+     * Retrieves all tickets by user ID.
+     * @param userId The ID of the user to retrieve tickets for.
+     * @return A list of TicketResponseDTOs for each ticket in the database.
+     */
+
+    public List<TicketResponseDTO> getAllTicketsByUserId(Long userId) {
+        return ticketRepository.findAllByUserId(userId).stream()
+                .map(TicketMapper.INSTANCE::ticketToTicketResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
      * Updates an existing ticket with the information provided in the TicketCreationDTO.
      *
      * @param id                The ID of the ticket to update.
@@ -70,6 +98,8 @@ public class TicketService {
                 .orElseThrow(() -> new RuntimeException("Ticket not found"));
         ticket.setTitle(ticketCreationDTO.getTitle());
         ticket.setDescription(ticketCreationDTO.getDescription());
+        ticket.setUser(userRepository.findById(ticketCreationDTO.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found")));
         Ticket updatedTicket = ticketRepository.save(ticket);
         return TicketMapper.INSTANCE.ticketToTicketResponseDTO(updatedTicket);
     }

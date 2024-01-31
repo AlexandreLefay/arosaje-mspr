@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TicketCommentDTO {
 
-    private int id;
+    private Long id;
     private String comment;
     private LocalDateTime createdAt;
-    private int userId;
+    private Long ticketId;
+    private Long userId;
 }

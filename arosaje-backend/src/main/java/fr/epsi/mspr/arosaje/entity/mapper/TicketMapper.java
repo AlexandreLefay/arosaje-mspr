@@ -48,11 +48,10 @@ public interface TicketMapper {
      * @return The corresponding Ticket entity.
      */
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "user", ignore = true) // Assuming the user is set elsewhere
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "status", ignore = true)
-    // Or set a default status if appropriate
     Ticket ticketCreationDTOToTicket(TicketCreationDTO ticketCreationDTO);
 }

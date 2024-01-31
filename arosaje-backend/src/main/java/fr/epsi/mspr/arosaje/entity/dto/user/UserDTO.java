@@ -28,6 +28,4 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<RoleDTO> roles;
-
-    // Getters et Setters
 }

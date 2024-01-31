@@ -33,6 +33,7 @@ public class TicketController {
         return ResponseEntity.ok(newTicket);
     }
 
+
     /**
      * Retrieves all tickets.
      *
@@ -41,6 +42,18 @@ public class TicketController {
     @GetMapping
     public ResponseEntity<List<TicketResponseDTO>> getAllTickets() {
         List<TicketResponseDTO> tickets = ticketService.getAllTickets();
+        return ResponseEntity.ok(tickets);
+    }
+
+    /**
+     * Retrieves all tickets for a specific user.
+     *
+     * @param userId The ID of the user to retrieve tickets for.
+     * @return ResponseEntity containing a list of TicketResponseDTOs for each ticket.
+     */
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<TicketResponseDTO>> getAllTicketsForUser(@PathVariable Long userId) {
+        List<TicketResponseDTO> tickets = ticketService.getAllTicketsByUserId(userId);
         return ResponseEntity.ok(tickets);
     }
 

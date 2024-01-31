@@ -12,4 +12,5 @@ import lombok.Setter;
 public class TicketCreationDTO {
     private String title;
     private String description;
+    private Long userId;
 }

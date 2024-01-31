@@ -27,6 +27,7 @@ public class User {
     private String lastname;
     private String email;
     private String phone;
+    private boolean active;
 
     @Embedded
     private Address address;

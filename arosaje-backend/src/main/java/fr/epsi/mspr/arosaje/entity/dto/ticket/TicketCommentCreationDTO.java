@@ -13,6 +13,5 @@ import lombok.Setter;
 public class TicketCommentCreationDTO {
     private String comment;
     private Long userId;
-
-
+    private Long ticketId;
 }
