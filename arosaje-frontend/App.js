@@ -3,9 +3,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomePage from './src/pages/HomePage';
 import UserPage from './src/pages/UserPage';
-
-
-import PlantPreview from './src/components/PlantPreview'; // Assurez-vous que le chemin est correct
+import AddPlantPage from './src/pages/AddPlantPage';
+import PlantPhoto from './src/components/PlantPhoto';
+import PlantForm from './src/components/PlantForm';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,12 +17,27 @@ const  App = () => {
       <Stack.Screen
         name="Home"
         component={HomePage}
-        options={{ title: 'Accueil' }} // Vous pouvez définir les options pour personnaliser la barre de titre
+        options={{ title: 'Accueil' }} 
       />
       <Stack.Screen
-        name="UserPage" 
+        name="User" 
         component={UserPage}
-        options={{ title: 'Utilisateur' }} />
+        options={{ title: 'Utilisateur' }}
+      />
+      <Stack.Screen
+        name="AddPlant" 
+        component={AddPlantPage}
+        options={{ title: 'Ajouter une plante' }}
+      />
+      <Stack.Screen
+        name="PlantForm" 
+        component={PlantForm}
+      />
+      <Stack.Screen
+        name="PlantPhoto" 
+        component={PlantPhoto}
+      />
+
       {/* Configurez d'autres écrans ici */}
     </Stack.Navigator>
   </NavigationContainer>
@@ -30,12 +45,3 @@ const  App = () => {
 }
 
 export default App;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
