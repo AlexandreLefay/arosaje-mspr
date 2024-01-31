@@ -16,7 +16,7 @@ const  App = () => {
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
+<Stack.Screen
         name="LoginPage"
         component={LoginPage}
         options={{ title: 'Connexion' }}
