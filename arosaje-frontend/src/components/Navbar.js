@@ -8,8 +8,7 @@ const Navbar = ({ navigation }) => {
             {/* Section gauche: Photo de profil */}
             <TouchableOpacity
                 style={styles.profileContainer}
-                onPress={() => navigation.navigate('UserPage')}
-
+                onPress={() => navigation.navigate('User')}
             >
                 <Image
                     source={{ uri: 'https://sm.ign.com/t/ign_fr/cover/a/avatar-gen/avatar-generations_bssq.300.jpg' }} // Remplacez par l'URL de votre photo de profil
