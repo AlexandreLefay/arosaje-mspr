@@ -14,7 +14,7 @@ import java.util.List;
  * Provides endpoints for creating, retrieving, updating, and deleting users.
  */
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired

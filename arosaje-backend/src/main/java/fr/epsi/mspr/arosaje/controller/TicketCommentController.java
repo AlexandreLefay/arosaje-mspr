@@ -29,9 +29,8 @@ public class TicketCommentController {
      * @return ResponseEntity with the created TicketCommentDTO.
      */
     @PostMapping
-    public ResponseEntity<TicketCommentDTO> createComment(@PathVariable Long ticketId,
-                                                          @RequestBody TicketCommentCreationDTO commentDTO) {
-        TicketCommentDTO newComment = ticketCommentService.createComment(ticketId, commentDTO);
+    public ResponseEntity<TicketCommentDTO> createComment(@PathVariable Long ticketId, @RequestBody TicketCommentCreationDTO commentDTO) {
+        TicketCommentDTO newComment = ticketCommentService.createComment(commentDTO, ticketId);
         return ResponseEntity.ok(newComment);
     }
 
@@ -42,8 +41,8 @@ public class TicketCommentController {
      * @return ResponseEntity with the TicketCommentDTO.
      */
     @GetMapping("/{commentId}")
-    public ResponseEntity<TicketCommentDTO> getCommentById(@PathVariable Long commentId) {
-        TicketCommentDTO comment = ticketCommentService.getCommentById(commentId);
+    public ResponseEntity<TicketCommentDTO> getCommentById(@PathVariable Long commentId, @PathVariable Long ticketId) {
+        TicketCommentDTO comment = ticketCommentService.getCommentById(commentId, ticketId);
         return ResponseEntity.ok(comment);
     }
 
@@ -54,7 +53,7 @@ public class TicketCommentController {
      * @return ResponseEntity with a list of TicketCommentDTOs.
      */
     @GetMapping
-    public ResponseEntity<List<TicketCommentDTO>> getAllCommentsByTicket(@PathVariable int ticketId) {
+    public ResponseEntity<List<TicketCommentDTO>> getAllCommentsByTicket(@PathVariable Long ticketId) {
         List<TicketCommentDTO> comments = ticketCommentService.getAllCommentsByTicket(ticketId);
         return ResponseEntity.ok(comments);
     }
@@ -67,7 +66,7 @@ public class TicketCommentController {
      * @return ResponseEntity with the updated TicketCommentDTO.
      */
     @PutMapping("/{commentId}")
-    public ResponseEntity<TicketCommentDTO> updateComment(@PathVariable Long commentId,
+    public ResponseEntity<TicketCommentDTO> updateComment(@PathVariable Long ticketId, @PathVariable Long commentId,
                                                           @RequestBody TicketCommentCreationDTO commentDTO) {
         TicketCommentDTO updatedComment = ticketCommentService.updateComment(commentId, commentDTO);
         return ResponseEntity.ok(updatedComment);

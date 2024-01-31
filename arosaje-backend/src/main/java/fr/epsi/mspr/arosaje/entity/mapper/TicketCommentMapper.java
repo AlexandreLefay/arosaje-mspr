@@ -12,6 +12,7 @@ public interface TicketCommentMapper {
     TicketCommentMapper INSTANCE = Mappers.getMapper(TicketCommentMapper.class);
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "ticket.id", target = "ticketId")
     TicketCommentDTO ticketCommentToTicketCommentDTO(TicketComment comment);
 
     @Mapping(target = "id", ignore = true)

@@ -2,6 +2,7 @@ package fr.epsi.mspr.arosaje.service;
 
 import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.repository.UserRepository;
+import fr.epsi.mspr.arosaje.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,10 +35,12 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé : " + username));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
-                getAuthorities(user));
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), getAuthorities(user));
+
+        return new CustomUserDetails(userDetails, user.getId(), user.getEmail(), user.isActive());
     }
+
 
     /**
      * Converts the roles associated with a User entity to Spring Security GrantedAuthority objects.
