@@ -4,6 +4,7 @@ package fr.epsi.mspr.arosaje.controller;
 import fr.epsi.mspr.arosaje.entity.Guardianship;
 import fr.epsi.mspr.arosaje.service.GuardianshipService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import java.util.List;
  * REST Controller for managing guardianships.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/api/guardianships")
 public class GuardianshipController {
 

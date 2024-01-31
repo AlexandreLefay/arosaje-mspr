@@ -15,6 +15,7 @@ import java.util.List;
  * Provides endpoints for creating, retrieving, updating, and deleting tickets.
  */
 @RestController
+@CrossOrigin(origins = "http://localhost:19006")
 @RequestMapping("/api/tickets")
 public class TicketController {
 
