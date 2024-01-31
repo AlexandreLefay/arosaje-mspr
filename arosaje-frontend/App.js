@@ -19,29 +19,29 @@ const  App = () => {
       <Stack.Screen
         name="LoginPage"
         component={LoginPage}
-        options={{ title: 'Connexion' }} 
+        options={{ title: 'Connexion' }}
       />
       <Stack.Screen
         name="Home"
         component={HomePage}
-        options={{ title: 'Accueil' }} 
+        options={{ title: 'Accueil' }}
       />
       <Stack.Screen
-        name="User" 
+        name="User"
         component={UserPage}
         options={{ title: 'Utilisateur' }}
       />
       <Stack.Screen
-        name="AddPlant" 
+        name="AddPlant"
         component={AddPlantPage}
         options={{ title: 'Ajouter une plante' }}
       />
       <Stack.Screen
-        name="PlantForm" 
+        name="PlantForm"
         component={PlantForm}
       />
       <Stack.Screen
-        name="PlantPhoto" 
+        name="PlantPhoto"
         component={PlantPhoto}
       />
 

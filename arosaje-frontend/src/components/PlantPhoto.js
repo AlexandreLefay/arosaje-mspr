@@ -53,7 +53,7 @@ const PlantPhoto = ({ navigation }) => {
 
         return (
         <SafeAreaView style={styles.container}>
-            <Image style={styles.preview} source={{ uri: `data:image/jpg;base64,${photo.base64}` }} />
+            <Image style={styles.preview} source={{ uri: "data:image/jpg;base64" + photo.base64 }} />
             <Button title="Share" onPress={sharePic} />
             {hasMediaLibraryPermission ? <Button title="Save" onPress={savePhoto} /> : undefined}
             <Button title="Discard" onPress={() => setPhoto(undefined)} />

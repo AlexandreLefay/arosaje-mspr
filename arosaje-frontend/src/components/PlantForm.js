@@ -78,8 +78,8 @@ const handleInputChange = (inputName, inputValue) => {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Button title="Ajouter une image" onPress={pickImage} />
         {image &&
-          <Image 
-            source={{ uri: image }} 
+          <Image
+            source={{ uri: image }}
             style={{ width: 200, height: 200 }}
           />
         }
