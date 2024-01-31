@@ -6,6 +6,8 @@ import UserPage from './src/pages/UserPage';
 import AddPlantPage from './src/pages/AddPlantPage';
 import PlantPhoto from './src/components/PlantPhoto';
 import PlantForm from './src/components/PlantForm';
+import LoginPage from './src/pages/LoginPage';
+import PlantPreview from './src/components/PlantPreview'; // Assurez-vous que le chemin est correct
 
 const Stack = createNativeStackNavigator();
 
@@ -14,6 +16,11 @@ const  App = () => {
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
+      <Stack.Screen
+        name="LoginPage"
+        component={LoginPage}
+        options={{ title: 'Connexion' }} 
+      />
       <Stack.Screen
         name="Home"
         component={HomePage}
