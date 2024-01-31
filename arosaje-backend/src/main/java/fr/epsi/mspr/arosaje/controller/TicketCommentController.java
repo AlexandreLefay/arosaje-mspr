@@ -68,7 +68,7 @@ public class TicketCommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<TicketCommentDTO> updateComment(@PathVariable Long ticketId, @PathVariable Long commentId,
                                                           @RequestBody TicketCommentCreationDTO commentDTO) {
-        TicketCommentDTO updatedComment = ticketCommentService.updateComment(commentId, commentDTO);
+        TicketCommentDTO updatedComment = ticketCommentService.updateComment(ticketId, commentId, commentDTO);
         return ResponseEntity.ok(updatedComment);
     }
 
@@ -79,8 +79,8 @@ public class TicketCommentController {
      * @return ResponseEntity indicating the operation's success status.
      */
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
-        ticketCommentService.deleteComment(commentId);
+    public ResponseEntity<?> deleteComment(@PathVariable Long ticketId, @PathVariable Long commentId) {
+        ticketCommentService.deleteComment(ticketId, commentId);
         return ResponseEntity.ok().build();
     }
 }

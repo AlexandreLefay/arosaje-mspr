@@ -23,5 +23,9 @@ DROP TABLE IF EXISTS reaction_tickets;
 DROP TABLE IF EXISTS reaction_messages;
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS guardianships;
+DROP TABLE IF EXISTS ticket_comments;
+
+
 
 SET FOREIGN_KEY_CHECKS = 1;

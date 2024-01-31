@@ -88,10 +88,11 @@ public class TicketCommentService {
      * @return The updated TicketCommentDTO.
      * @throws RuntimeException if the comment is not found.
      */
-    public TicketCommentDTO updateComment(Long commentId, TicketCommentCreationDTO commentDTO) {
-        TicketComment existingComment = ticketCommentRepository.findById(commentId)
+    public TicketCommentDTO updateComment(Long ticketId, Long commentId, TicketCommentCreationDTO commentDTO) {
+        TicketComment existingComment = ticketCommentRepository.findCommentByTicketIdAndCommentId(ticketId, commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
-        // Update the necessary fields here...
+
+        existingComment.setComment(commentDTO.getComment());
 
         TicketComment updatedComment = ticketCommentRepository.save(existingComment);
         return TicketCommentMapper.INSTANCE.ticketCommentToTicketCommentDTO(updatedComment);
@@ -100,13 +101,14 @@ public class TicketCommentService {
     /**
      * Deletes a comment by its ID.
      *
+     * @param ticketId The ID of the ticket to which the comment belongs.
      * @param commentId The ID of the comment to delete.
      * @throws RuntimeException if the comment is not found.
      */
-    public void deleteComment(Long commentId) {
-        if (!ticketCommentRepository.existsById(commentId)) {
+    public void deleteComment(Long ticketId, Long commentId) {
+        if (!ticketCommentRepository.existsCommentByTicketIdAndCommentId(ticketId, commentId)) {
             throw new RuntimeException("Comment not found");
         }
-        ticketCommentRepository.deleteById(commentId);
+        ticketCommentRepository.deleteCommentByTicketIdAndCommentId(ticketId, commentId);
     }
 }
