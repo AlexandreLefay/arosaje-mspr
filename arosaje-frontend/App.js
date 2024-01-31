@@ -7,7 +7,7 @@ export default function App() {
     <View style={styles.container}>
       <Text>My react native app!</Text>
       <StatusBar style="auto" />
-        <Navbar/>
+      <Navbar/>
     </View>
   );
 }
