@@ -2,11 +2,15 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assurez-vous d'avoir installé expo vector-icons
 
-const Navbar = () => {
+const Navbar = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {/* Section gauche: Photo de profil */}
-            <TouchableOpacity style={styles.profileContainer}>
+            <TouchableOpacity
+                style={styles.profileContainer}
+                onPress={() => navigation.navigate('UserPage')}
+
+            >
                 <Image
                     source={{ uri: 'https://sm.ign.com/t/ign_fr/cover/a/avatar-gen/avatar-generations_bssq.300.jpg' }} // Remplacez par l'URL de votre photo de profil
                     style={styles.profilePic}
@@ -32,12 +36,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
-        height: 60, // Hauteur de la navbar
+        height: 90, // Hauteur de la navbar
         backgroundColor: 'white', // Couleur de fond de la navbar
         position: 'absolute', // Positionnement absolu par rapport à son conteneur
         left: 0, // Aligné à gauche
         right: 0, // Aligné à droite
-        bottom: 10, // Aligné en bas
+        bottom: 0, // Aligné en bas
     },
     profileContainer: {
         flex: 1,
