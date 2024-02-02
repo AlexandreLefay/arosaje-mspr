@@ -1,55 +1,14 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomePage from './src/pages/HomePage';
-import UserPage from './src/pages/UserPage';
-import AddPlantPage from './src/pages/AddPlantPage';
-import PlantPhoto from './src/components/PlantPhoto';
-import PlantForm from './src/components/PlantForm';
-import LoginPage from './src/pages/LoginPage';
-import Navbar from "./src/components/Navbar";
+import * as React from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
+import AppNavigator from './src/routes/AppNavigator';
+import {SafeAreaProvider} from "react-native-safe-area-context";
 
-const Stack = createNativeStackNavigator();
-
-
-const  App = ({ navigation }) => {
-  return (
-    <NavigationContainer>
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen
-        name="LoginPage"
-        component={LoginPage}
-        options={{ title: 'Connexion' }} 
-      />
-      <Stack.Screen
-        name="Home"
-        component={HomePage}
-        options={{ title: 'Accueil' }} 
-      />
-      <Stack.Screen
-        name="User" 
-        component={UserPage}
-        options={{ title: 'Utilisateur' }}
-      />
-      <Stack.Screen
-        name="AddPlant" 
-        component={AddPlantPage}
-        options={{ title: 'Ajouter une plante' }}
-      />
-      <Stack.Screen
-        name="PlantForm" 
-        component={PlantForm}
-      />
-      <Stack.Screen
-        name="PlantPhoto" 
-        component={PlantPhoto}
-      />
-
-      {/* Configurez d'autres écrans ici */}
-    </Stack.Navigator>
-    <Navbar navigation={navigation} />
-  </NavigationContainer>
-  );
+export default function App() {
+    return (
+        <SafeAreaProvider>
+            <PaperProvider>
+                <AppNavigator/>
+            </PaperProvider>
+        </SafeAreaProvider>
+    );
 }
-
-export default App;

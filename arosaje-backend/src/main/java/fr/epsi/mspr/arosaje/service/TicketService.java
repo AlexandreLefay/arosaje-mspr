@@ -6,6 +6,7 @@ import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketResponseDTO;
 import fr.epsi.mspr.arosaje.entity.mapper.TicketMapper;
+import fr.epsi.mspr.arosaje.repository.TicketCommentRepository;
 import fr.epsi.mspr.arosaje.repository.TicketRepository;
 import fr.epsi.mspr.arosaje.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class TicketService {
 
     @Autowired
     private TicketRepository ticketRepository;
+
+    @Autowired
+    private TicketCommentRepository ticketCommentRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -112,6 +116,7 @@ public class TicketService {
         if (!ticketRepository.existsById(id)) {
             throw new RuntimeException("Ticket not found");
         }
+        ticketCommentRepository.deleteCommentsByTicketId(id);
         ticketRepository.deleteById(id);
     }
 }

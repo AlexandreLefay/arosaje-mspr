@@ -39,6 +39,10 @@ public interface TicketCommentRepository extends JpaRepository<TicketComment, Lo
     @Query("DELETE FROM TicketComment tc WHERE tc.ticket.id = :ticketId AND tc.id = :commentId")
     void deleteCommentByTicketIdAndCommentId(@Param("ticketId") Long ticketId, @Param("commentId") Long commentId);
 
+    @Modifying
+    @Query("DELETE FROM TicketComment tc WHERE tc.ticket.id = :ticketId")
+    void deleteCommentsByTicketId(@Param("ticketId") Long ticketId);
+
 
     /**
      * Check if one comment exists based on the given ticket ID and comment ID.
