@@ -1,12 +1,9 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import Navbar from "../components/Navbar";
 import PlantPreview from '../components/PlantPreview';
 
 
 const UserPage = ({ navigation }) => {
-
-
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <PlantPreview
@@ -17,9 +14,7 @@ const UserPage = ({ navigation }) => {
         <Button
             title="Ajouter"
             onPress={() => navigation.navigate('AddPlant')}
-        />
-    
-      <Navbar navigation={navigation} />
+        />    
     </View>
   );
 };

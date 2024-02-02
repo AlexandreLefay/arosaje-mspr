@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Assurez-vous d'avoir installé expo vector-icons
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const Navbar = ({ navigation }) => {
+
+const Navbar = () => {
+    const navigation = useNavigation();
+
     return (
         <View style={styles.container}>
             {/* Section gauche: Photo de profil */}
@@ -41,6 +45,7 @@ const styles = StyleSheet.create({
         left: 0, // Aligné à gauche
         right: 0, // Aligné à droite
         bottom: 0, // Aligné en bas
+        zIndex: 999,
     },
     profileContainer: {
         flex: 1,
