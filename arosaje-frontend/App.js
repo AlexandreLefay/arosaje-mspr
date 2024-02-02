@@ -7,12 +7,12 @@ import AddPlantPage from './src/pages/AddPlantPage';
 import PlantPhoto from './src/components/PlantPhoto';
 import PlantForm from './src/components/PlantForm';
 import LoginPage from './src/pages/LoginPage';
-import PlantPreview from './src/components/PlantPreview'; // Assurez-vous que le chemin est correct
+import Navbar from "./src/components/Navbar";
 
 const Stack = createNativeStackNavigator();
 
 
-const  App = () => {
+const  App = ({ navigation }) => {
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="Home">
@@ -47,6 +47,7 @@ const  App = () => {
 
       {/* Configurez d'autres écrans ici */}
     </Stack.Navigator>
+    <Navbar navigation={navigation} />
   </NavigationContainer>
   );
 }
