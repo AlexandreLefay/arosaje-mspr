@@ -20,6 +20,10 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     private int referenceId;
     private String referenceType;
 
@@ -28,6 +32,4 @@ public class Photo {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
-
-    // Getters and setters...
 }
