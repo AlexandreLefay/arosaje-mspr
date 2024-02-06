@@ -2,12 +2,14 @@ package fr.epsi.mspr.arosaje.controller;
 
 
 import fr.epsi.mspr.arosaje.entity.Guardianship;
+import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipDTO;
+import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipSaveRequest;
+import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.MandatoryGuardianshipId;
+import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.OptionalGuardianshipId;
 import fr.epsi.mspr.arosaje.service.GuardianshipService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,12 +25,77 @@ public class GuardianshipController {
     private GuardianshipService guardianshipService;
 
     /**
-     * GET /api/guardianships : get all the guardianships.
+     * Retrieves all guardianships.
      *
      * @return the list of guardianships.
      */
-    @GetMapping
-    public List<Guardianship> getAllGuardianships() {
+    @GetMapping()
+    public List<GuardianshipDTO> getAllGuardianships() {
         return guardianshipService.findAll();
+    }
+
+    /**
+     * Retrieves all guardianship for a specific user based on the owner of the plant's owner id.
+     *
+     * @param ownerUserId The ID of the owner to retrieve guardianships for.
+     * @return the list of guardianships.
+     */
+    @GetMapping("/user/{ownerUserId}")
+    public List<GuardianshipDTO> getAllGuardianshipsByOwnerUserId(Long ownerUserId) {
+        return guardianshipService.findAllByOwnerUserId(ownerUserId);
+    }
+
+    /**
+     * Retrieves all guardianship for a specific user based on the guardian of the plant's guardian id.
+     *
+     * @param guardianUserId The ID of the guardian to retrieve guardianships for.
+     * @return the list of guardianships.
+     */
+    @GetMapping("/guardian/{guardianUserId}")
+    public List<GuardianshipDTO> getAllGuardianshipsByGuardianUserId(Long guardianUserId) {
+        return guardianshipService.findAllByGuardianUserId(guardianUserId);
+    }
+
+    /**
+     * Retrieves a guardianship by its ID.
+     *
+     * @param id The ID of the guardianship to retrieve.
+     * @return the guardianship with the specified ID.
+     */
+    @GetMapping("/{id}")
+    public GuardianshipDTO getGuardianshipById(Long id) {
+        return guardianshipService.findById(id);
+    }
+
+    /**
+     * Updates a guardianship by its ID.
+     *
+     * @param guardianshipSaveRequest The GuardianshipDTO containing the updated guardianship's information.
+     * @return the updated GuardianshipDTO.
+     */
+    @PutMapping("/{id}")
+    public GuardianshipDTO updateGuardianship(@Validated(MandatoryGuardianshipId.class) @RequestBody GuardianshipSaveRequest guardianshipSaveRequest) {
+        return guardianshipService.update(guardianshipSaveRequest);
+    }
+
+    /**
+     * Creates a new guardianship.
+     *
+     * @param guardianshipDTO The GuardianshipDTO containing the new guardianship's information.
+     * @return the created GuardianshipDTO.
+     */
+    @PostMapping
+    public GuardianshipDTO createGuardianship(@Validated(OptionalGuardianshipId.class) @RequestBody GuardianshipDTO guardianshipDTO) {
+        return guardianshipService.create(guardianshipDTO);
+    }
+
+    /**
+     * Deletes a guardianship by its ID.
+     *
+     * @param id The ID of the guardianship to delete.
+     */
+    @DeleteMapping("/{id}")
+    public void deleteGuardianship(@PathVariable Long id) {
+        guardianshipService.delete(id);
     }
 }
