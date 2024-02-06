@@ -36,3 +36,16 @@ INSERT INTO ticket_comments (id, comment, created_at, ticket_id, user_id) VALUES
 INSERT INTO user_roles (user_id, role_id) VALUES
 (1, 3), (2, 2), (3, 2), (4, 2), (5, 2);
 
+INSERT INTO guardianships (description, end_date, start_date, status, title, guardian_user_id, owner_user_id, plant_id ) VALUES
+('Low authority whole. Dream happy they training buy citizen yeah.', '2022-09-08 09:57:25', '2021-08-19 16:35:55', 'Active', 'though', 1, 2, 1),
+('Apply decision whole defense many. Attack lead human serve easy open. Go admit yes stage.', '2020-09-06 06:08:16', '2023-07-23 16:58:20', 'Active', 'Congress', 1, 2, 2),
+('Perhaps stuff middle minute value common. Pressure feel hotel none left game professional.', '2021-02-14 13:41:05', '2022-09-26 03:44:53', 'Active', 'everybody', 3, 2, 3),
+('Study none catch which.', '2020-03-12 07:50:28', '2021-11-29 16:55:31', 'Active', 'at', 4, 2, 4),
+('Happen already within specific success know.', '2023-10-28 23:15:20', '2021-05-24 08:50:00', 'Active', 'economic', 5, 2, 5);
+
+INSERT INTO messages (id, content, created_at, updated_at, receiver_id, sender_id) VALUES
+(1, 'Name interest along prepare. Factor outside teach morning skin town key.', '2020-04-07 02:08:37', '2023-08-19 00:18:17', 3, 1),
+(2, 'State happen family hotel go. Important produce send whatever stand purpose. Behind onto three strong field happy. Who start center decide. Great best represent wear relationship.', '2022-07-29 17:42:28', '2021-09-23 03:38:31', 2, 1),
+(3, 'Really choose central talk data reality eat. Watch marriage food. Arrive officer mother. Staff long physical you.', '2020-09-19 19:58:19', '2023-04-18 13:23:08', 2, 1),
+(4, 'Congress hospital ground around section. Article consider least bank suddenly.', '2020-01-01 10:50:14', '2023-04-17 23:14:54', 5, 1),
+(5, 'Economy human budget. This generation professor sign them prove probably. Somebody sign sense color. Court say admit tax. Prevent better try room Mr interest. Mean old young.', '2021-06-04 21:26:02', '2021-08-30 18:50:37', 5, 1);

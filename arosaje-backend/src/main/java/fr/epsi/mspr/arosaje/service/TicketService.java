@@ -47,7 +47,6 @@ public class TicketService {
         return TicketMapper.INSTANCE.ticketToTicketResponseDTO(savedTicket);
     }
 
-
     /**
      * Retrieves all tickets.
      *
@@ -83,7 +82,6 @@ public class TicketService {
                 .map(TicketMapper.INSTANCE::ticketToTicketResponseDTO)
                 .collect(Collectors.toList());
     }
-
 
     /**
      * Updates an existing ticket with the information provided in the TicketCreationDTO.

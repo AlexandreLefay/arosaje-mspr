@@ -28,9 +28,13 @@ public class Guardianship {
     @JoinColumn(name = "guardian_user_id", referencedColumnName = "id")
     private User guardianUser;
 
+    @ManyToOne
+    @JoinColumn(name = "owner_user_id", referencedColumnName = "id")
+    private User ownerUser;
+
+    private String title;
+    private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String status;
-
-    // Getters and setters...
 }
