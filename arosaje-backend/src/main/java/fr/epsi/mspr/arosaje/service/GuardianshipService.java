@@ -7,9 +7,11 @@ import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipDTO;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipSaveRequest;
 import fr.epsi.mspr.arosaje.entity.mapper.GuardianshipMapper;
+import fr.epsi.mspr.arosaje.exception.guardianship.GuardianshipNotFoundException;
 import fr.epsi.mspr.arosaje.repository.GuardianshipRepository;
 import fr.epsi.mspr.arosaje.repository.PlantRepository;
 import fr.epsi.mspr.arosaje.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * Service for handling Guardianship data operations.
  */
+@Slf4j
 @Service
 public class GuardianshipService {
 
@@ -137,10 +140,14 @@ public class GuardianshipService {
      * @param id The ID of the guardianship to delete.
      */
     public void delete(Long id) {
-        if (!guardianshipRepository.existsById(id)) {
-            throw new RuntimeException("Guardianship not found");
-        }
-        guardianshipRepository.deleteById(id);
+
+        Guardianship guardianship = guardianshipRepository.findById(id).orElseThrow(() -> {
+            log.info("Guardianship {} not found", id);
+            return new GuardianshipNotFoundException(id);
+        });
+
+        guardianshipRepository.delete(guardianship);
+        log.info("Guardianship {} has been deleted", id);
     }
 }
 
