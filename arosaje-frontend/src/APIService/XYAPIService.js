@@ -1,4 +1,4 @@
-class XYControleur{
+class XYAPIService {
     x: number;
     y: number;
 

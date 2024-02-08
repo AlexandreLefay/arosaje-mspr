@@ -27,7 +27,7 @@ class User {
         this._createdAt = createdAt;
         this._updatedAt = updatedAt;
         this._roles = roles;
-        const coord: XYControleur = new XMLDocument(address.street, address.city);
+        const coord: XYAPIService = new XMLDocument(address.street, address.city);
         this._x = coord.x;
         this._y = coord.y;
 
@@ -94,6 +94,9 @@ class User {
     }
 
     set address(value: Adress) {
+        const coord: XYAPIService = new XMLDocument(value.street, value.city);
+        this._x = coord.x;
+        this._y = coord.y;
         this._address = value;
     }
 
