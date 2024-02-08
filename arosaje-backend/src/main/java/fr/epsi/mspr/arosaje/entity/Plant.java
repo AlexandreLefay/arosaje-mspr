@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "plants")
@@ -21,11 +22,9 @@ public class Plant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
-
 
     private String name;
     private String species;
@@ -37,6 +36,10 @@ public class Plant {
 
     @Column(name = "updated_at", insertable = false, updatable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "plante_id") // Colonne dans la table Photo
+    private List<Photo> photos;
 }
 
 

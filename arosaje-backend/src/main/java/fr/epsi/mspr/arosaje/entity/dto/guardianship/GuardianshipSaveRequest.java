@@ -1,5 +1,6 @@
 package fr.epsi.mspr.arosaje.entity.dto.guardianship;
 
+import fr.epsi.mspr.arosaje.entity.Status;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.MandatoryGuardianshipId;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.OptionalGuardianshipId;
 import jakarta.validation.constraints.NotNull;
@@ -35,6 +36,6 @@ public class GuardianshipSaveRequest {
 
     private Date endDate;
 
-    private String Status;
+    private Status status;
 
 }
