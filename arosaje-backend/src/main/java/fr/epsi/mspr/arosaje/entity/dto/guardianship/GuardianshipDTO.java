@@ -1,5 +1,6 @@
 package fr.epsi.mspr.arosaje.entity.dto.guardianship;
 
+import fr.epsi.mspr.arosaje.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class GuardianshipDTO {
 
     private Long plantId;
 
+    private Status status;
+
     private String title;
 
     private String description;
@@ -27,7 +30,5 @@ public class GuardianshipDTO {
     private Date startDate;
 
     private Date endDate;
-
-    private String Status;
 
 }

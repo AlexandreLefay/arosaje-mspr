@@ -6,6 +6,7 @@ import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -20,6 +21,7 @@ public interface UserMapper {
      * @param user The User entity to be converted.
      * @return The corresponding UserDTO.
      */
+    @Mapping(target = "profilPictureBlob", source = "photoProfil.imageBlob")
     UserDTO userToUserDTO(User user);
 
     /**

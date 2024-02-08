@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ticket_comments")
@@ -32,4 +33,8 @@ public class TicketComment {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "commentaire_id")
+    private List<Photo> photos;
 }

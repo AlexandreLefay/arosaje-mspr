@@ -1,5 +1,6 @@
 package fr.epsi.mspr.arosaje.entity.dto.user;
 
+import fr.epsi.mspr.arosaje.entity.Photo;
 import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,5 @@ public class UserCreationDTO {
     private float y;
     private String password;
     private Set<String> roleNames;
+    private Photo photoProfil;
 }
