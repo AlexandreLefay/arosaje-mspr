@@ -36,6 +36,6 @@ public class GuardianshipSaveRequest {
 
     private Date endDate;
 
-    private Status status;
+    private Long statusId;
 
 }

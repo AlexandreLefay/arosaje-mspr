@@ -34,7 +34,7 @@ public class Guardianship {
     private User ownerUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "status_id", nullable = false)
+    @JoinColumn(name = "status_id", nullable = true)
     private Status status;
 
     private String title;
