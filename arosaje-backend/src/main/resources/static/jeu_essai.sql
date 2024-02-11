@@ -1,10 +1,10 @@
 INSERT INTO roles (id, name) VALUES
- (1, 'admin'),
- (2, 'user'),
- (3, 'botanist');
+ (1, 'ADMIN'),
+ (2, 'USER'),
+ (3, 'BOTANIST');
 
-INSERT INTO roles (id, name) VALUES
-(1, 'INPROGRESS'),
+INSERT INTO status (id, name) VALUES
+(1, 'IN PROGRESS'),
 (2, 'PENDING'),
 (3, 'CLOSED');
 

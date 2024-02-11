@@ -1,11 +1,13 @@
 package fr.epsi.mspr.arosaje.entity.dto.ticket;
 
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,4 +20,6 @@ public class TicketCommentDTO {
     private LocalDateTime createdAt;
     private Long ticketId;
     private Long userId;
+    private List<PhotoResponseDto> photos;
+
 }

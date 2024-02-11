@@ -1,7 +1,11 @@
 package fr.epsi.mspr.arosaje.entity.mapper;
 
+import fr.epsi.mspr.arosaje.entity.Photo;
+import fr.epsi.mspr.arosaje.entity.Plant;
 import fr.epsi.mspr.arosaje.entity.Ticket;
 import fr.epsi.mspr.arosaje.entity.TicketComment;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketCommentDTO;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.ticket.TicketResponseDTO;
@@ -23,6 +27,15 @@ public interface TicketMapper {
      */
     @Mapping(source = "user.id", target = "userId")
     TicketResponseDTO ticketToTicketResponseDTO(Ticket ticket);
+
+    /**
+     * Converts a TicketComment entity to a TicketCommentDTO.
+     *
+     * @param plant The TicketComment entity to be converted.
+     * @return The corresponding TicketCommentDTO.
+     */
+    @Mapping(source = "user.id", target = "userId")
+    PlantResponseDto plantToPlantResponseDto(Plant plant);
 
     /**
      * Converts a TicketComment entity to a TicketCommentDTO.

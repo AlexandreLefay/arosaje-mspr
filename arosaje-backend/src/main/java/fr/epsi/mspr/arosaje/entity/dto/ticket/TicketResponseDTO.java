@@ -1,5 +1,7 @@
 package fr.epsi.mspr.arosaje.entity.dto.ticket;
 
+import fr.epsi.mspr.arosaje.entity.Plant;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,7 @@ public class TicketResponseDTO {
     private LocalDateTime createdAt;
     private Set<TicketCommentDTO> comments;
     private Long userId;
+    private PlantResponseDto plant;
 
 
 }
