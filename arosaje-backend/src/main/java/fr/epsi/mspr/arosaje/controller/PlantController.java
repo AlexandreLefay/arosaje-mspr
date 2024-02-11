@@ -32,6 +32,16 @@ public class PlantController {
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
+    // GETTING PLANTS BY USER ID
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<PlantResponseDto>> getPlantsByUserId(@PathVariable Long userId) {
+        List<Plant> plants = plantService.findByUserId(userId);
+        List<PlantResponseDto> responseDtos = plants.stream()
+                .map(PlantMapper.INSTANCE::plantToPlantResponseDto)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+
 
     // GETTING PLANT BY ID
     @GetMapping("/{id}")

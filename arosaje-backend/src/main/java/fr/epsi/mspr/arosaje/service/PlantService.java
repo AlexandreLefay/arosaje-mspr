@@ -31,6 +31,10 @@ public class PlantService {
         return optionalPlant.orElse(null);
     }
 
+    public List<Plant> findByUserId(Long userId) {
+        return plantRepository.findByUserId(userId);
+    }
+
     public Plant save(Plant plant, Long userId) {
         if (userId != null) {
             Optional<User> userOptional = userRepository.findById(userId);
