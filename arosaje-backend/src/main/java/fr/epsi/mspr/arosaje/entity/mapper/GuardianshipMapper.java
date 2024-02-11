@@ -24,6 +24,11 @@ public interface GuardianshipMapper {
     Guardianship guardianshipDTOToGuardianship(GuardianshipDTO guardianshipDTO);
 
     /**
+     * Convert a GuardianshipSaveRequest to a Guardianship
+     */
+    Guardianship guardianshipSaveRequestToGuardianship(GuardianshipSaveRequest guardianshipSaveRequest);
+
+    /**
      * Overwrite a Guardianship with a GuardianshipSaveRequest
      */
     void updateGuardianshipFromGuardianshipSaveRequest(GuardianshipSaveRequest guardianshipSaveRequest, @MappingTarget Guardianship guardianship);

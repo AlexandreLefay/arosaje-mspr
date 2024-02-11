@@ -81,12 +81,12 @@ public class GuardianshipController {
     /**
      * Creates a new guardianship.
      *
-     * @param guardianshipDTO The GuardianshipDTO containing the new guardianship's information.
+     * @param guardianshipSaveRequest The GuardianshipDTO containing the new guardianship's information.
      * @return the created GuardianshipDTO.
      */
     @PostMapping
-    public GuardianshipDTO createGuardianship(@Validated(OptionalGuardianshipId.class) @RequestBody GuardianshipDTO guardianshipDTO) {
-        return guardianshipService.create(guardianshipDTO);
+    public GuardianshipDTO createGuardianship(@Validated(OptionalGuardianshipId.class) @RequestBody GuardianshipSaveRequest guardianshipSaveRequest) {
+        return guardianshipService.create(guardianshipSaveRequest);
     }
 
     /**

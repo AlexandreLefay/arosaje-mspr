@@ -113,19 +113,19 @@ public class GuardianshipService {
     /**
      * Create a new guardianship.
      *
-     * @param guardianshipDTO The GuardianshipDTO containing the new guardianship's information.
+     * @param guardianshipSaveRequest The GuardianshipDTO containing the new guardianship's information.
      * @return the created guardianship.
      */
-    public GuardianshipDTO create(GuardianshipDTO guardianshipDTO) {
-        Guardianship guardianship = guardianshipMapper.guardianshipDTOToGuardianship(guardianshipDTO);
+    public GuardianshipDTO create(GuardianshipSaveRequest guardianshipSaveRequest) {
+        Guardianship guardianship = guardianshipMapper.guardianshipSaveRequestToGuardianship(guardianshipSaveRequest);
 
-        User owner = userRepository.findById(guardianshipDTO.getOwnerId())
+        User owner = userRepository.findById(guardianshipSaveRequest.getOwnerId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        User guardian = userRepository.findById(guardianshipDTO.getGuardianId())
+        User guardian = userRepository.findById(guardianshipSaveRequest.getGuardianId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Plant plant = plantRepository.findById(guardianshipDTO.getPlantId())
+        Plant plant = plantRepository.findById(guardianshipSaveRequest.getPlantId())
                 .orElseThrow(() -> new RuntimeException("Plant not found"));
 
         guardianship.setOwnerUser(owner);
