@@ -34,7 +34,6 @@ public class TicketComment {
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "commentaire_id")
+    @OneToMany(mappedBy = "ticketComment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Photo> photos;
 }

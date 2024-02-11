@@ -8,9 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class PhotoResponseDto {
-    private int id;
-    private int referenceId;
-    private String referenceType;
+    private Long id;
+    private Long userId;
     private byte[] imageBlob;
     private LocalDateTime createdAt;
 }

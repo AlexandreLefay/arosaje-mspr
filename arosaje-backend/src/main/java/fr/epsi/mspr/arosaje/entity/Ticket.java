@@ -37,4 +37,9 @@ public class Ticket {
 
     @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY)
     private Set<TicketComment> comments;
+
+    @ManyToOne
+    @JoinColumn(name = "plant_id", referencedColumnName = "id")
+    private Plant plant;
+
 }

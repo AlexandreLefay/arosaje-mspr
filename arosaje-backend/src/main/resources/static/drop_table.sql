@@ -25,6 +25,7 @@ DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS guardianships;
 DROP TABLE IF EXISTS ticket_comments;
+DROP TABLE IF EXISTS status;
 
 
 

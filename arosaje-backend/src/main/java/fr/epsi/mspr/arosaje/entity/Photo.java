@@ -29,4 +29,8 @@ public class Photo {
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "commentaire_id")
+    private TicketComment ticketComment;
 }
