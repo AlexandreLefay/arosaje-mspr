@@ -10,4 +10,6 @@ public interface GuardianshipRepository extends JpaRepository<Guardianship, Long
     List<Guardianship> findAllByOwnerUserId(Long userId);
 
     List<Guardianship> findAllByGuardianUserId(Long userId);
+
+    boolean existsByPlantId(Long plantId);
 }
