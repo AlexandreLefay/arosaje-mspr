@@ -11,12 +11,12 @@ import java.util.List;
 @Getter
 @Setter
 public class PlantResponseDto {
-    private int id;
+    private Long id;
     private String name;
     private String species;
     private String careInstructions;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private int userId;
+    private Long userId;
     private List<PhotoResponseDto> photos;
 }
