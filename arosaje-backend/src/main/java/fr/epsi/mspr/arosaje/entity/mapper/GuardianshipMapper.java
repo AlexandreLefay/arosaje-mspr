@@ -32,7 +32,5 @@ public interface GuardianshipMapper {
      * Overwrite a Guardianship with a GuardianshipSaveRequest
      */
     void updateGuardianshipFromGuardianshipSaveRequest(GuardianshipSaveRequest guardianshipSaveRequest, @MappingTarget Guardianship guardianship);
-
-
 }
 

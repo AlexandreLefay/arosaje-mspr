@@ -1,6 +1,5 @@
 package fr.epsi.mspr.arosaje.entity.dto.user;
 
-import fr.epsi.mspr.arosaje.entity.Photo;
 import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
 import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
 import fr.epsi.mspr.arosaje.entity.dto.role.RoleDTO;
@@ -9,9 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Blob;
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 @Getter
 @Setter
@@ -31,5 +29,5 @@ public class UserDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<RoleDTO> roles;
-    private byte[] profilPictureBlob;
+    private PhotoResponseDto photo;
 }

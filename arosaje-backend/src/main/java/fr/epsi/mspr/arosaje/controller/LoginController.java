@@ -6,11 +6,16 @@ import fr.epsi.mspr.arosaje.security.CustomUserDetails;
 import fr.epsi.mspr.arosaje.security.JwtUtil;
 import fr.epsi.mspr.arosaje.service.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.*;
+import java.util.stream.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:19006")
@@ -27,8 +32,8 @@ public class LoginController {
     private JwtUtil jwtTokenUtil;
 
     @PostMapping("/login")
-    public LoginResponse createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) throws Exception {
-        // Authentifier l'utilisateur
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) throws Exception {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getUsername(),
@@ -37,18 +42,22 @@ public class LoginController {
         );
 
         // Charger les détails de l'utilisateur après authentification
-        UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
-        // Vérifier si userDetails est une instance de CustomUserDetails
-        if (!(userDetails instanceof CustomUserDetails)) {
-            throw new Exception("Les détails de l'utilisateur ne sont pas de type CustomUserDetails");
-        }
+        CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
         // Générer le JWT à partir des CustomUserDetails
-        CustomUserDetails customUserDetails = (CustomUserDetails) userDetails;
-        final String jwt = jwtTokenUtil.generateToken(customUserDetails);
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
 
-        // Retourner la réponse avec le JWT
-        return new LoginResponse(jwt);
+        // Récupérer les informations de l'utilisateur
+        String username = userDetails.getUsername();
+        Set<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+
+        // Ajouter le token dans l'en-tête X-Authorization de la réponse
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Authorization", jwt);
+
+        // Retourner la réponse avec les détails de l'utilisateur et le JWT dans l'en-tête
+        return ResponseEntity.ok().headers(headers).body(new LoginResponse(username, roles.toString()));
     }
 }
