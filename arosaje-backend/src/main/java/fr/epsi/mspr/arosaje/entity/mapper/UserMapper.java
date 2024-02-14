@@ -1,8 +1,10 @@
 package fr.epsi.mspr.arosaje.entity.mapper;
 
 import fr.epsi.mspr.arosaje.entity.Address;
+import fr.epsi.mspr.arosaje.entity.Photo;
 import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserDTO;
 import org.mapstruct.Mapper;
@@ -21,8 +23,9 @@ public interface UserMapper {
      * @param user The User entity to be converted.
      * @return The corresponding UserDTO.
      */
-    @Mapping(target = "profilPictureBlob", source = "photoProfil.imageBlob")
+    @Mapping(source = "photo", target = "photo")
     UserDTO userToUserDTO(User user);
+
 
     /**
      * Converts an Address entity to an AddressDTO.
@@ -55,5 +58,14 @@ public interface UserMapper {
      * @param user            The User entity to be updated.
      */
     void updateUserFromDto(UserCreationDTO userCreationDTO, @MappingTarget User user);
+
+    /**
+     * Converts a Photo entity to a PhotoResponseDto.
+     *
+     * @param photo The Photo entity to be converted.
+     * @return The corresponding PhotoResponseDto.
+     */
+    @Mapping(source = "user.id", target = "userId")
+    PhotoResponseDto photoToPhotoResponseDto(Photo photo);
 }
 

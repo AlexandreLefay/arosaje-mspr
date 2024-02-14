@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.*;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -53,9 +52,9 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "photo_profil_id", referencedColumnName = "id")
-    private Photo photoProfil;
+    private Photo photo;
 
 }
 

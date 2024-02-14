@@ -7,8 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.time.*;
 
 @Entity
 @Table(name = "guardianships")
@@ -33,7 +32,7 @@ public class Guardianship {
     @JoinColumn(name = "owner_user_id", referencedColumnName = "id")
     private User ownerUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "status_id", nullable = true)
     private Status status;
 
