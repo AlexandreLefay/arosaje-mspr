@@ -3,7 +3,7 @@ package fr.epsi.mspr.arosaje.entity.mapper;
 import fr.epsi.mspr.arosaje.entity.Photo;
 import fr.epsi.mspr.arosaje.entity.Plant;
 import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
-import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantDto;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantSaveRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,7 +22,7 @@ public interface PlantMapper {
     @Mapping(source = "createdAt", target = "createdAt")
     @Mapping(source = "updatedAt", target = "updatedAt")
     @Mapping(source = "user.id", target = "userId")
-    PlantResponseDto plantToPlantResponseDto(Plant plant);
+    PlantDto plantToPlantResponseDto(Plant plant);
 
     /**
      * Converts a TicketComment entity to a TicketCommentDTO.

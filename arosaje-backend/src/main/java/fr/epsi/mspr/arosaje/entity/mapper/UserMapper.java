@@ -5,17 +5,15 @@ import fr.epsi.mspr.arosaje.entity.Photo;
 import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
 import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
-import fr.epsi.mspr.arosaje.entity.dto.user.UserCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserDTO;
+import fr.epsi.mspr.arosaje.entity.dto.user.UserSaveRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     /**
      * Converts a User entity to a UserDTO.
@@ -44,20 +42,17 @@ public interface UserMapper {
     Address addressDTOToAddress(AddressDTO addressDTO);
 
     /**
-     * Converts a UserCreationDTO to a User entity.
-     *
-     * @param userDTO The UserCreationDTO to be converted.
-     * @return The corresponding User entity.
+     * Converts a UserSaveRequest to a User entity.
      */
-    User userDTOToUser(UserCreationDTO userDTO);
+    User userSaveRequestToUser(UserSaveRequest userSaveRequest);
 
     /**
      * Updates a User entity with the data provided in a UserCreationDTO.
      *
-     * @param userCreationDTO The DTO containing the new user data.
+     * @param userSaveRequest The DTO containing the new user data.
      * @param user            The User entity to be updated.
      */
-    void updateUserFromDto(UserCreationDTO userCreationDTO, @MappingTarget User user);
+    void updateUserFromUserSaveRequest(UserSaveRequest userSaveRequest, @MappingTarget User user);
 
     /**
      * Converts a Photo entity to a PhotoResponseDto.
@@ -67,5 +62,7 @@ public interface UserMapper {
      */
     @Mapping(source = "user.id", target = "userId")
     PhotoResponseDto photoToPhotoResponseDto(Photo photo);
+
+
 }
 

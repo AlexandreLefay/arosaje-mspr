@@ -149,5 +149,14 @@ public class GuardianshipService {
         guardianshipRepository.delete(guardianship);
         log.info("Guardianship {} has been deleted", id);
     }
+
+    /**
+     * Check if a plant in use by a guardianship.
+     * @param plantId The ID of the plant to check.
+     * @return true if the plant is in use by a guardianship, false otherwise.
+     */
+    public boolean isPlantInUse(Long plantId) {
+        return guardianshipRepository.existsByPlantId(plantId);
+    }
 }
 

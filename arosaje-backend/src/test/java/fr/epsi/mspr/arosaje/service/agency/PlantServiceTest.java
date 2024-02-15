@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.*;
 
 import fr.epsi.mspr.arosaje.entity.Plant;
 import fr.epsi.mspr.arosaje.entity.User;
-import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantDto;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantSaveRequest;
 import fr.epsi.mspr.arosaje.exception.plant.PlantInUseException;
 import fr.epsi.mspr.arosaje.exception.plant.PlantNotFoundException;
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -48,14 +47,14 @@ public class PlantServiceTest {
 
     private Plant plant;
     private User user;
-    private PlantResponseDto plantResponseDto;
+    private PlantDto plantDto;
     private PlantSaveRequest plantSaveRequest;
 
     @BeforeEach
     void setUp() {
         plant = new Plant();
         user = new User();
-        plantResponseDto = new PlantResponseDto();
+        plantDto = new PlantDto();
         plantSaveRequest = new PlantSaveRequest();
 
         plant.setId(1);
@@ -68,25 +67,25 @@ public class PlantServiceTest {
     @Test
     void findAll_ShouldReturnListOfPlants() {
         given(plantRepository.findAll()).willReturn(Collections.singletonList(plant));
-        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantResponseDto);
+        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantDto);
 
-        List<PlantResponseDto> result = plantService.findAll();
+        List<PlantDto> result = plantService.findAll();
 
         then(plantRepository).should(times(1)).findAll();
         assertThat(result).isNotNull().hasSize(1);
-        assertThat(result.get(0)).isSameAs(plantResponseDto);
+        assertThat(result.get(0)).isSameAs(plantDto);
     }
 
     @Test
     void findById_ExistingId_ShouldReturnPlant() {
         given(plantRepository.findById(anyLong())).willReturn(Optional.of(plant));
-        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantResponseDto);
+        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantDto);
 
-        PlantResponseDto result = plantService.findById(1L);
+        PlantDto result = plantService.findById(1L);
 
         then(plantRepository).should(times(1)).findById(1L);
         assertThat(result).isNotNull();
-        assertThat(result).isSameAs(plantResponseDto);
+        assertThat(result).isSameAs(plantDto);
     }
 
     @Test
@@ -104,20 +103,20 @@ public class PlantServiceTest {
         // Given
         given(plantRepository.findById(anyLong())).willReturn(Optional.of(plant));
         given(plantRepository.save(any(Plant.class))).willReturn(plant);
-        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantResponseDto);
+        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantDto);
 
         // Additional setup for the update
         plantSaveRequest.setId(1L); // Assuming this is how you identify the plant to update
         plantSaveRequest.setUserId((long) user.getId());
 
         // When
-        PlantResponseDto result = plantService.update(plantSaveRequest);
+        PlantDto result = plantService.update(plantSaveRequest);
 
         // Then
         then(plantRepository).should(times(1)).findById(plantSaveRequest.getId());
         then(plantRepository).should(times(1)).save(plant);
         assertThat(result).isNotNull();
-        assertThat(result).isSameAs(plantResponseDto);
+        assertThat(result).isSameAs(plantDto);
     }
 
     @Test

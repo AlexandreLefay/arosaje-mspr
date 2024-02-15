@@ -16,29 +16,57 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Plant {
-    // Getters and setters
-    @Getter
+
+    /**
+     * The id of the plant
+     * Generated automatically
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    /**
+     * The user who owns the plant
+     * Many plants can belong to one user
+     * The user_id column is the foreign key
+     */
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    /**
+     * The name of the plant
+     */
     private String name;
+
+    /**
+     * The species of the plant
+     */
     private String species;
     @Column(name = "care_instructions", columnDefinition = "TEXT")
     private String careInstructions;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    /**
+     * The date when the plant was created
+     * Inserted automatically
+     */
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at", insertable = false, updatable = false)
+    /**
+     * The date when the plant was last updated
+     * Inserted automatically
+     */
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    /**
+     * The list of photos of the plant
+     * One plant can have many photos
+     * The plante_id column is the foreign key
+     */
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "plante_id") // Colonne dans la table Photo
+    @JoinColumn(name = "plante_id")
     private List<Photo> photos;
 }
 
