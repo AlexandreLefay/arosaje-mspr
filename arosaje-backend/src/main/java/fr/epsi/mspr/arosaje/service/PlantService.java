@@ -2,15 +2,13 @@ package fr.epsi.mspr.arosaje.service;
 
 import fr.epsi.mspr.arosaje.entity.Plant;
 import fr.epsi.mspr.arosaje.entity.User;
-import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantDto;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantSaveRequest;
 import fr.epsi.mspr.arosaje.entity.mapper.PlantMapper;
 import fr.epsi.mspr.arosaje.exception.plant.PlantInUseException;
 import fr.epsi.mspr.arosaje.exception.plant.PlantNotFoundException;
 import fr.epsi.mspr.arosaje.exception.user.UserNotFoundException;
-import fr.epsi.mspr.arosaje.repository.GuardianshipRepository;
 import fr.epsi.mspr.arosaje.repository.PlantRepository;
-import fr.epsi.mspr.arosaje.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,14 +25,14 @@ public class PlantService {
      * Repositories for Plant, User, and Guardianship entities.
      */
     private final PlantRepository plantRepository;
-    private final UserRepository userRepository;
-    private final GuardianshipRepository guardianshipRepository;
+    private final UserService userService;
+    private final GuardianshipService guardianshipService;
     private final PlantMapper plantMapper;
 
     /**
      * Error messages.
      */
-    private static final String PLANT_IN_USE = "Plant with id {} is in use";
+    private static final String PLANT_IN_USE = "Plant with id {} is in use in a guardianship.";
     private static final String PLANT_NOT_FOUND = "No plant found with id {}";
     private static final String USER_NOT_FOUND = "No user found with id {}";
 
@@ -43,10 +41,10 @@ public class PlantService {
      */
 
     @Autowired
-    public PlantService(PlantRepository plantRepository, UserRepository userRepository, GuardianshipRepository guardianshipRepository, PlantMapper plantMapper) {
+    public PlantService(PlantRepository plantRepository, UserService userService, GuardianshipService guardianshipService, PlantMapper plantMapper) {
         this.plantRepository = plantRepository;
-        this.userRepository = userRepository;
-        this.guardianshipRepository = guardianshipRepository;
+        this.userService = userService;
+        this.guardianshipService = guardianshipService;
         this.plantMapper = plantMapper;
     }
 
@@ -55,7 +53,7 @@ public class PlantService {
      *
      * @return a list of all plants.
      */
-    public List<PlantResponseDto> findAll() {
+    public List<PlantDto> findAll() {
         List<Plant> plants = plantRepository.findAll();
 
         return plants.stream()
@@ -69,7 +67,7 @@ public class PlantService {
      * @param userId The ID of the user to retrieve plants for.
      * @return a list of plants for the specified user.
      */
-    public List<PlantResponseDto> findByUserId(Long userId) {
+    public List<PlantDto> findByUserId(Long userId) {
         List<Plant> plants = plantRepository.findByUserId(userId);
 
         return plants.stream()
@@ -83,7 +81,7 @@ public class PlantService {
      * @param id The ID of the plant to retrieve.
      * @return the plant with the specified ID.
      */
-    public PlantResponseDto findById(Long id) {
+    public PlantDto findById(Long id) {
         Plant plant = plantRepository.findById(id)
                 .orElseThrow(() -> {
                     log.info(PLANT_NOT_FOUND, id);
@@ -99,14 +97,15 @@ public class PlantService {
      * @param plantSaveRequest The plant to create.
      * @return the created plant.
      */
-    public PlantResponseDto create(PlantSaveRequest plantSaveRequest) {
+    public PlantDto create(PlantSaveRequest plantSaveRequest) {
         Plant plant = plantMapper.plantSaveRequestToPlant(plantSaveRequest);
 
-        User user = userRepository.findById(plantSaveRequest.getUserId())
-                .orElseThrow(() -> {
-                    log.info(USER_NOT_FOUND, plantSaveRequest.getUserId());
-                    return new UserNotFoundException(plantSaveRequest.getUserId());
-                });
+        if (userService.userExists(plantSaveRequest.getUserId())) {
+            log.info(USER_NOT_FOUND, plantSaveRequest.getUserId());
+            throw new UserNotFoundException(plantSaveRequest.getUserId());
+        }
+
+        User user = userService.getUserEntityById(plantSaveRequest.getUserId());
 
         plant.setUser(user);
         plant.setCreatedAt(LocalDateTime.now());
@@ -120,7 +119,7 @@ public class PlantService {
      * @param plantSaveRequest The PlantDTO containing the updated information for the plant.
      * @return the updated plant.
      */
-    public PlantResponseDto update(PlantSaveRequest plantSaveRequest) {
+    public PlantDto update(PlantSaveRequest plantSaveRequest) {
 
         Plant plant = plantRepository.findById(plantSaveRequest.getId())
                 .orElseThrow(() -> {
@@ -143,7 +142,7 @@ public class PlantService {
             log.info(PLANT_NOT_FOUND, id);
             throw new PlantNotFoundException(id);
         }
-        if (guardianshipRepository.existsByPlantId(id)) {
+        if (guardianshipService.isPlantInUse(id)) {
             log.info(PLANT_IN_USE, id);
             throw new PlantInUseException(id);
         }

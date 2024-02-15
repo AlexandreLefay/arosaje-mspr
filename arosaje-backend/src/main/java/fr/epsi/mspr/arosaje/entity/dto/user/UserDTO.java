@@ -16,18 +16,56 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-
+    /**
+     * The id of the user.
+     */
     private int id;
+    /**
+     * The username of the user.
+     */
     private String username;
+    /**
+     * The first name of the user.
+     */
     private String firstname;
+    /**
+     * The last name of the user.
+     */
     private String lastname;
+    /**
+     * The email of the user.
+     */
     private String email;
+    /**
+     * The phone number of the user.
+     */
     private String phone;
+    /**
+     * The address of the user.
+     */
     private AddressDTO address;
+    /**
+     * The latitude of the user's location.
+     */
     private float x;
+    /**
+     * The longitude of the user's location.
+     */
     private float y;
+    /**
+     * The date and time the user was created.
+     */
     private LocalDateTime createdAt;
+    /**
+     * The date and time the user was last updated.
+     */
     private LocalDateTime updatedAt;
+    /**
+     * The roles of the user.
+     */
     private Set<RoleDTO> roles;
+    /**
+     * The photos of the user.
+     */
     private PhotoResponseDto photo;
 }

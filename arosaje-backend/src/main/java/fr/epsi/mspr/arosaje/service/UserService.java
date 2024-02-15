@@ -1,77 +1,102 @@
 package fr.epsi.mspr.arosaje.service;
 
 import fr.epsi.mspr.arosaje.entity.User;
-import fr.epsi.mspr.arosaje.entity.dto.user.UserCreationDTO;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserDTO;
+import fr.epsi.mspr.arosaje.entity.dto.user.UserSaveRequest;
 import fr.epsi.mspr.arosaje.entity.mapper.UserMapper;
+import fr.epsi.mspr.arosaje.exception.user.UserNotFoundException;
 import fr.epsi.mspr.arosaje.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Service for handling user-related operations.
  */
+@Slf4j
 @Service
 public class UserService {
-
-    @Autowired
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
     /**
-     * Creates a new user from the provided UserCreationDTO.
-     *
-     * @param userCreationDTO the user creation DTO
-     * @return the created user as a UserDTO
-     * @throws RuntimeException if the user cannot be created
+     * Error messages.
      */
-    public UserDTO createUser(UserCreationDTO userCreationDTO) throws RuntimeException {
-        User user = UserMapper.INSTANCE.userDTOToUser(userCreationDTO);
-        User savedUser = userRepository.save(user);
-        return UserMapper.INSTANCE.userToUserDTO(savedUser);
+    private static final String USER_NOT_FOUND = "No user found with id {}";
+
+
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+    }
+
+
+    /**
+     * Creates a new user.
+     *
+     * @param userSaveRequest the user data to create
+     * @return the created user as a UserDTO
+     */
+    public UserDTO createUser(UserSaveRequest userSaveRequest) {
+        User user = userMapper.userSaveRequestToUser(userSaveRequest);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        return userMapper.userToUserDTO(userRepository.save(user));
     }
 
     /**
-     * Retrieves a user by their ID.
+     * Retrieves a user by ID.
      *
      * @param id the ID of the user to retrieve
      * @return the retrieved user as a UserDTO
-     * @throws RuntimeException if the user cannot be found
+     * @throws UserNotFoundException if the user cannot be found
      */
-    public UserDTO getUserById(Long id) throws RuntimeException {
+    public UserDTO getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return UserMapper.INSTANCE.userToUserDTO(user);
+                .orElseThrow(() -> {
+                    log.info(USER_NOT_FOUND, id);
+                    return new UserNotFoundException(id);
+                });
+
+        return userMapper.userToUserDTO(user);
     }
 
     /**
-     * Updates a user with the provided UserCreationDTO.
+     * Updates a user with the provided UserSaveRequest.
      *
-     * @param id              the ID of the user to update
-     * @param userCreationDTO the updated user data
+     * @param userSaveRequest the updated user data
      * @return the updated user as a UserDTO
-     * @throws RuntimeException if the user cannot be found or updated
+     * @throws UserNotFoundException if the user cannot be found
      */
-    public UserDTO updateUser(Long id, UserCreationDTO userCreationDTO) throws RuntimeException {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        UserMapper.INSTANCE.updateUserFromDto(userCreationDTO, user);
-        User updatedUser = userRepository.save(user);
-        return UserMapper.INSTANCE.userToUserDTO(updatedUser);
+    public UserDTO updateUser(UserSaveRequest userSaveRequest) {
+        User user = userRepository.findById(userSaveRequest.getId())
+                .orElseThrow(() -> {
+                    log.info(USER_NOT_FOUND, userSaveRequest.getId());
+                    return new UserNotFoundException(userSaveRequest.getId());
+                });
+
+        userMapper.updateUserFromUserSaveRequest(userSaveRequest, user);
+        user.setUpdatedAt(LocalDateTime.now());
+        return userMapper.userToUserDTO(userRepository.save(user));
     }
 
     /**
      * Delete a user by his ID.
      *
      * @param id the ID of the user to delete
-     * @throws RuntimeException if the user cannot be found or deleted
+     * @throws UserNotFoundException if the user cannot be found
      */
-    public void deleteUser(Long id) throws RuntimeException {
+    public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        userRepository.deleteById(id);
+                .orElseThrow(() -> {
+                    log.info(USER_NOT_FOUND, id);
+                    return new UserNotFoundException(id);
+                });
+
+        userRepository.delete(user);
     }
 
     /**
@@ -81,8 +106,29 @@ public class UserService {
      */
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(UserMapper.INSTANCE::userToUserDTO)
+                .map(userMapper::userToUserDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Check if a user exists by his ID.
+     *
+     * @param id the ID of the user to check
+     * @return true if the user exists, false otherwise
+     */
+    public boolean userExists(Long id) {
+        return userRepository.existsById(id);
+    }
+
+    /**
+     * Retrieves a user entity by his id.
+     */
+    public User getUserEntityById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.info(USER_NOT_FOUND, id);
+                    return new UserNotFoundException(id);
+                });
     }
 }
 

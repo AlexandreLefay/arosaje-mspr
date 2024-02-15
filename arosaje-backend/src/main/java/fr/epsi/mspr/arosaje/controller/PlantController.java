@@ -1,9 +1,9 @@
 package fr.epsi.mspr.arosaje.controller;
 
-import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.MandatoryGuardianshipId;
-import fr.epsi.mspr.arosaje.entity.dto.plant.PlantResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.plant.PlantDto;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantSaveRequest;
 import fr.epsi.mspr.arosaje.entity.dto.plant.validation.MandatoryPlanId;
+import fr.epsi.mspr.arosaje.entity.dto.plant.validation.OptionnalPlantId;
 import fr.epsi.mspr.arosaje.service.PlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +27,7 @@ public class PlantController {
      * @return the list of plants.
      */
     @GetMapping()
-    public List<PlantResponseDto> getAllPlants() {
+    public List<PlantDto> getAllPlants() {
         return plantService.findAll();
     }
 
@@ -38,7 +38,7 @@ public class PlantController {
      * @return the list of plants.
      */
     @GetMapping("/user/{userId}")
-    public List<PlantResponseDto> getAllPlantsByUserId(@PathVariable Long userId) {
+    public List<PlantDto> getAllPlantsByUserId(@PathVariable Long userId) {
         return plantService.findByUserId(userId);
     }
 
@@ -46,11 +46,12 @@ public class PlantController {
     /**
      * Retrieves a plant by its ID.
      *
-     * @param id The ID of the plant to retrieve.
+     * @param plantId The ID of the plant to retrieve.
      * @return the plant.
      */
-    public PlantResponseDto getPlantById(Long id) {
-        return plantService.findById(id);
+    @GetMapping("/{plantId}")
+    public PlantDto getPlantById(@PathVariable Long plantId) {
+        return plantService.findById(plantId);
     }
 
     /**
@@ -60,7 +61,7 @@ public class PlantController {
      * @return the created plant.
      */
     @PostMapping()
-    public PlantResponseDto createPlant(@RequestBody PlantSaveRequest plantSaveRequest) {
+    public PlantDto createPlant(@Validated(OptionnalPlantId.class) @RequestBody PlantSaveRequest plantSaveRequest) {
         return plantService.create(plantSaveRequest);
     }
 
@@ -71,12 +72,12 @@ public class PlantController {
      * @return the updated plant.
      */
     @PutMapping("/{id}")
-    public PlantResponseDto updatePlant(@Validated(MandatoryPlanId.class) @RequestBody PlantSaveRequest plantSaveRequest) {
+    public PlantDto updatePlant(@Validated(MandatoryPlanId.class) @RequestBody PlantSaveRequest plantSaveRequest) {
         return plantService.update(plantSaveRequest);
     }
 
     /**
-     * Deletes a plant.
+     * Delete a plant.
      *
      * @param id The ID of the plant to delete.
      */

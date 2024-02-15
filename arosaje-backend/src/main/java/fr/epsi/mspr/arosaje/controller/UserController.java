@@ -1,10 +1,13 @@
 package fr.epsi.mspr.arosaje.controller;
 
-import fr.epsi.mspr.arosaje.entity.dto.user.UserCreationDTO;
+import fr.epsi.mspr.arosaje.entity.dto.user.UserSaveRequest;
 import fr.epsi.mspr.arosaje.entity.dto.user.UserDTO;
+import fr.epsi.mspr.arosaje.entity.dto.user.validation.MandatoryUserId;
+import fr.epsi.mspr.arosaje.entity.dto.user.validation.OptionalUserId;
 import fr.epsi.mspr.arosaje.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,12 +27,12 @@ public class UserController {
     /**
      * Creates a new user.
      *
-     * @param userCreationDTO The UserCreationDTO containing the new user's information.
+     * @param userSaveRequest The UserCreationDTO containing the new user's information.
      * @return ResponseEntity containing the created UserDTO.
      */
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
-        UserDTO newUser = userService.createUser(userCreationDTO);
+    public ResponseEntity<UserDTO> createUser(@Validated(OptionalUserId.class)@RequestBody UserSaveRequest userSaveRequest) {
+        UserDTO newUser = userService.createUser(userSaveRequest);
         return ResponseEntity.ok(newUser);
     }
 
@@ -49,12 +52,12 @@ public class UserController {
      * Updates an existing user.
      *
      * @param id              The ID of the user to update.
-     * @param userCreationDTO The UserCreationDTO containing the updated information for the user.
+     * @param userSaveRequest The UserCreationDTO containing the updated information for the user.
      * @return ResponseEntity containing the updated UserDTO.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserCreationDTO userCreationDTO) {
-        UserDTO updatedUser = userService.updateUser(id, userCreationDTO);
+    public ResponseEntity<UserDTO> updateUser(@Validated(MandatoryUserId.class) @RequestBody UserSaveRequest userSaveRequest) {
+        UserDTO updatedUser = userService.updateUser(userSaveRequest);
         return ResponseEntity.ok(updatedUser);
     }
 
