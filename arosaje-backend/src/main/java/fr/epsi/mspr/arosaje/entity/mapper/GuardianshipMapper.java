@@ -26,11 +26,15 @@ public interface GuardianshipMapper {
     /**
      * Convert a GuardianshipSaveRequest to a Guardianship
      */
+    @Mapping(source = "statusId", target = "status.id")
     Guardianship guardianshipSaveRequestToGuardianship(GuardianshipSaveRequest guardianshipSaveRequest);
 
     /**
      * Overwrite a Guardianship with a GuardianshipSaveRequest
      */
+    @Mapping(source = "ownerId", target = "ownerUser.id")
+    @Mapping(source = "guardianId", target = "guardianUser.id")
+    @Mapping(source = "plantId", target = "plant.id")
     void updateGuardianshipFromGuardianshipSaveRequest(GuardianshipSaveRequest guardianshipSaveRequest, @MappingTarget Guardianship guardianship);
 }
 

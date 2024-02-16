@@ -66,8 +66,15 @@ public class PlantService {
      *
      * @param userId The ID of the user to retrieve plants for.
      * @return a list of plants for the specified user.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     public List<PlantDto> findByUserId(Long userId) {
+
+        if (userService.userExists(userId)) {
+            log.info(USER_NOT_FOUND, userId);
+            throw new UserNotFoundException(userId);
+        }
+
         List<Plant> plants = plantRepository.findByUserId(userId);
 
         return plants.stream()
@@ -80,6 +87,7 @@ public class PlantService {
      *
      * @param id The ID of the plant to retrieve.
      * @return the plant with the specified ID.
+     * @throws PlantNotFoundException if the plant with the specified ID does not exist.
      */
     public PlantDto findById(Long id) {
         Plant plant = plantRepository.findById(id)
@@ -96,6 +104,7 @@ public class PlantService {
      *
      * @param plantSaveRequest The plant to create.
      * @return the created plant.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     public PlantDto create(PlantSaveRequest plantSaveRequest) {
         Plant plant = plantMapper.plantSaveRequestToPlant(plantSaveRequest);
@@ -118,6 +127,7 @@ public class PlantService {
      *
      * @param plantSaveRequest The PlantDTO containing the updated information for the plant.
      * @return the updated plant.
+     * @throws PlantNotFoundException if the plant with the specified ID does not exist.
      */
     public PlantDto update(PlantSaveRequest plantSaveRequest) {
 
@@ -136,6 +146,8 @@ public class PlantService {
      * Delete a plant by its ID.
      *
      * @param id The ID of the plant to delete.
+     * @throws PlantNotFoundException if the plant with the specified ID does not exist.
+     * @throws PlantInUseException   if the plant with the specified ID is in use in a guardianship.
      */
     public void delete(Long id) {
         if (!plantRepository.existsById(id)) {
@@ -147,5 +159,18 @@ public class PlantService {
             throw new PlantInUseException(id);
         }
         plantRepository.deleteById(id);
+    }
+
+    /**
+     * Retrieve a plant entity by its ID.
+     * @param id The ID of the plant to retrieve.
+     * @return the plant with the specified ID.
+     */
+    public Plant getPlantEntityById(Long id) {
+        return plantRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.info(PLANT_NOT_FOUND, id);
+                    return new PlantNotFoundException(id);
+                });
     }
 }

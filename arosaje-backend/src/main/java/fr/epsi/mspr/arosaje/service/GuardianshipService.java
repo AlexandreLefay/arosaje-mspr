@@ -3,15 +3,19 @@ package fr.epsi.mspr.arosaje.service;
 
 import fr.epsi.mspr.arosaje.entity.Guardianship;
 import fr.epsi.mspr.arosaje.entity.Plant;
+import fr.epsi.mspr.arosaje.entity.Status;
 import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipDTO;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipSaveRequest;
 import fr.epsi.mspr.arosaje.entity.mapper.GuardianshipMapper;
 import fr.epsi.mspr.arosaje.exception.guardianship.GuardianshipNotFoundException;
+import fr.epsi.mspr.arosaje.exception.plant.PlantNotFoundException;
+import fr.epsi.mspr.arosaje.exception.user.UserNotFoundException;
 import fr.epsi.mspr.arosaje.repository.GuardianshipRepository;
-import fr.epsi.mspr.arosaje.repository.PlantRepository;
-import fr.epsi.mspr.arosaje.repository.UserRepository;
+import fr.epsi.mspr.arosaje.repository.StatusRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,19 +28,33 @@ import java.util.stream.Collectors;
 @Service
 public class GuardianshipService {
 
+    /**
+     * Error messages.
+     */
+    private static final String GUARDIANSHIP_NOT_FOUND = "No guardianship found with id {}.";
+    private static final String PLANT_NOT_FOUND = "No plant found with id {}";
+    private static final String USER_NOT_FOUND = "No user found with id {}";
+    /**
+     * Repositories for Guardianship.
+     * Service for handling User and plant data operations.
+     */
     private GuardianshipRepository guardianshipRepository;
-
+    private StatusRepository statusRepository;
     private GuardianshipMapper guardianshipMapper;
+    /**
+     * Add @lazy to avoid circular dependency and @Autowired to inject the service.
+     */
+    @Lazy
+    @Autowired
+    private PlantService plantService;
+    @Lazy
+    @Autowired
+    private UserService userService;
 
-    private UserRepository userRepository;
-
-    private PlantRepository plantRepository;
-
-    public GuardianshipService(GuardianshipRepository guardianshipRepository, GuardianshipMapper guardianshipMapper, UserRepository userRepository, PlantRepository plantRepository) {
+    public GuardianshipService(GuardianshipRepository guardianshipRepository, StatusRepository statusRepository, GuardianshipMapper guardianshipMapper) {
         this.guardianshipRepository = guardianshipRepository;
+        this.statusRepository = statusRepository;
         this.guardianshipMapper = guardianshipMapper;
-        this.userRepository = userRepository;
-        this.plantRepository = plantRepository;
     }
 
     /**
@@ -57,8 +75,15 @@ public class GuardianshipService {
      *
      * @param userId The ID of the owner to retrieve guardianships for.
      * @return a list of guardianships for the specified user.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     public List<GuardianshipDTO> findAllByOwnerUserId(Long userId) {
+
+        if (!userService.userExists(userId)) {
+            log.info(USER_NOT_FOUND, userId);
+            throw new UserNotFoundException(userId);
+        }
+
         List<Guardianship> guardianships = guardianshipRepository.findAllByOwnerUserId(userId);
 
         return guardianships.stream()
@@ -71,8 +96,15 @@ public class GuardianshipService {
      *
      * @param userId The ID of the guardian to retrieve guardianships for.
      * @return a list of guardianships for the specified user.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     public List<GuardianshipDTO> findAllByGuardianUserId(Long userId) {
+
+        if (!userService.userExists(userId)) {
+            log.info(USER_NOT_FOUND, userId);
+            throw new UserNotFoundException(userId);
+        }
+
         List<Guardianship> guardianships = guardianshipRepository.findAllByGuardianUserId(userId);
 
         return guardianships.stream()
@@ -85,14 +117,16 @@ public class GuardianshipService {
      *
      * @param id The ID of the guardianship to retrieve.
      * @return the guardianship with the specified ID.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
      */
     public GuardianshipDTO findById(Long id) {
-        List<GuardianshipDTO> guardianships = findAll();
+        Guardianship guardianship = guardianshipRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.info(GUARDIANSHIP_NOT_FOUND, id);
+                    return new GuardianshipNotFoundException(id);
+                });
 
-        return guardianships.stream()
-                .filter(guardianship -> guardianship.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return guardianshipMapper.guardianshipToGuardianshipDTO(guardianship);
     }
 
     /**
@@ -100,12 +134,18 @@ public class GuardianshipService {
      *
      * @param guardianshipSaveRequest The GuardianshipDTO containing the updated information for the guardianship.
      * @return the updated guardianship.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
      */
     public GuardianshipDTO update(GuardianshipSaveRequest guardianshipSaveRequest) {
 
-        Guardianship guardianship = guardianshipRepository.findById(guardianshipSaveRequest.getId())
-                .orElseThrow(() -> new RuntimeException("Guardianship not found"));
+        Guardianship guardianship = guardianshipRepository.findById(guardianshipSaveRequest.getId()).orElseThrow(() -> {
+            log.info(GUARDIANSHIP_NOT_FOUND, guardianshipSaveRequest.getId());
+            return new GuardianshipNotFoundException(guardianshipSaveRequest.getId());
+        });
 
+        Status status = statusRepository.findById(guardianshipSaveRequest.getStatusId()).orElse(null);
+
+        guardianship.setStatus(status);
         guardianshipMapper.updateGuardianshipFromGuardianshipSaveRequest(guardianshipSaveRequest, guardianship);
         return guardianshipMapper.guardianshipToGuardianshipDTO(guardianshipRepository.save(guardianship));
     }
@@ -115,22 +155,19 @@ public class GuardianshipService {
      *
      * @param guardianshipSaveRequest The GuardianshipDTO containing the new guardianship's information.
      * @return the created guardianship.
+     * @throws UserNotFoundException  if the user with the specified ID does not exist.
+     * @throws PlantNotFoundException if the plant with the specified ID does not exist.
      */
     public GuardianshipDTO create(GuardianshipSaveRequest guardianshipSaveRequest) {
         Guardianship guardianship = guardianshipMapper.guardianshipSaveRequestToGuardianship(guardianshipSaveRequest);
 
-        User owner = userRepository.findById(guardianshipSaveRequest.getOwnerId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User owner = userService.getUserEntityById(guardianshipSaveRequest.getOwnerId());
 
-        User guardian = userRepository.findById(guardianshipSaveRequest.getGuardianId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Plant plant = plantRepository.findById(guardianshipSaveRequest.getPlantId())
-                .orElseThrow(() -> new RuntimeException("Plant not found"));
+        Plant plant = plantService.getPlantEntityById(guardianshipSaveRequest.getPlantId());
 
         guardianship.setOwnerUser(owner);
-        guardianship.setGuardianUser(guardian);
         guardianship.setPlant(plant);
+
         return guardianshipMapper.guardianshipToGuardianshipDTO(guardianshipRepository.save(guardianship));
     }
 
@@ -138,6 +175,9 @@ public class GuardianshipService {
      * Delete a guardianship by its ID.
      *
      * @param id The ID of the guardianship to delete.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
+     * @throws if                            the guardianship is currently active based on the status. TODO: Implement this.
+     *                                                                             TODO: Error 500 because we can't delete a guardianship that currently has messages associated with it.
      */
     public void delete(Long id) {
 
@@ -152,6 +192,7 @@ public class GuardianshipService {
 
     /**
      * Check if a plant in use by a guardianship.
+     *
      * @param plantId The ID of the plant to check.
      * @return true if the plant is in use by a guardianship, false otherwise.
      */

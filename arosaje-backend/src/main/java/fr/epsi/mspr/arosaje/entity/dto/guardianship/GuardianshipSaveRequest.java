@@ -24,6 +24,8 @@ public class GuardianshipSaveRequest {
 
     private Long ownerId;
 
+    @Null(groups = {OptionalGuardianshipId.class})
+    @NotNull(groups = {MandatoryGuardianshipId.class})
     private Long guardianId;
 
     private Long plantId;

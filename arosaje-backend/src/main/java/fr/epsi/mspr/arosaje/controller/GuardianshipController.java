@@ -6,6 +6,9 @@ import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipDTO;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.GuardianshipSaveRequest;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.MandatoryGuardianshipId;
 import fr.epsi.mspr.arosaje.entity.dto.guardianship.validation.OptionalGuardianshipId;
+import fr.epsi.mspr.arosaje.exception.guardianship.GuardianshipNotFoundException;
+import fr.epsi.mspr.arosaje.exception.plant.PlantNotFoundException;
+import fr.epsi.mspr.arosaje.exception.user.UserNotFoundException;
 import fr.epsi.mspr.arosaje.service.GuardianshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +42,7 @@ public class GuardianshipController {
      *
      * @param ownerUserId The ID of the owner to retrieve guardianships for.
      * @return the list of guardianships.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     @GetMapping("/user/{ownerUserId}")
     public List<GuardianshipDTO> getAllGuardianshipsByOwnerUserId(Long ownerUserId) {
@@ -50,6 +54,7 @@ public class GuardianshipController {
      *
      * @param guardianUserId The ID of the guardian to retrieve guardianships for.
      * @return the list of guardianships.
+     * @throws UserNotFoundException if the user with the specified ID does not exist.
      */
     @GetMapping("/guardian/{guardianUserId}")
     public List<GuardianshipDTO> getAllGuardianshipsByGuardianUserId(Long guardianUserId) {
@@ -61,6 +66,7 @@ public class GuardianshipController {
      *
      * @param id The ID of the guardianship to retrieve.
      * @return the guardianship with the specified ID.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
      */
     @GetMapping("/{id}")
     public GuardianshipDTO getGuardianshipById(Long id) {
@@ -72,6 +78,7 @@ public class GuardianshipController {
      *
      * @param guardianshipSaveRequest The GuardianshipDTO containing the updated guardianship's information.
      * @return the updated GuardianshipDTO.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
      */
     @PutMapping("/{id}")
     public GuardianshipDTO updateGuardianship(@Validated(MandatoryGuardianshipId.class) @RequestBody GuardianshipSaveRequest guardianshipSaveRequest) {
@@ -83,6 +90,8 @@ public class GuardianshipController {
      *
      * @param guardianshipSaveRequest The GuardianshipDTO containing the new guardianship's information.
      * @return the created GuardianshipDTO.
+     * @throws UserNotFoundException  if the user with the specified ID does not exist.
+     * @throws PlantNotFoundException if the plant with the specified ID does not exist.
      */
     @PostMapping
     public GuardianshipDTO createGuardianship(@Validated(OptionalGuardianshipId.class) @RequestBody GuardianshipSaveRequest guardianshipSaveRequest) {
@@ -91,8 +100,8 @@ public class GuardianshipController {
 
     /**
      * Deletes a guardianship by its ID.
-     *
      * @param id The ID of the guardianship to delete.
+     * @throws GuardianshipNotFoundException if the guardianship with the specified ID does not exist.
      */
     @DeleteMapping("/{id}")
     public void deleteGuardianship(@PathVariable Long id) {
