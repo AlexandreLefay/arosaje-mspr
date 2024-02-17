@@ -25,12 +25,17 @@ public class Photo {
     private User user;
 
     @Lob
+    @Column(name = "image_blob", columnDefinition="LONGBLOB")
     private byte[] imageBlob;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "commentaire_id")
     private TicketComment ticketComment;
+
+    @ManyToOne
+    @JoinColumn(name = "plant_id", referencedColumnName = "id")
+    private Plant plant;
 }

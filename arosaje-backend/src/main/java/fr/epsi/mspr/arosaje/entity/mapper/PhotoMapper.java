@@ -1,26 +1,22 @@
 package fr.epsi.mspr.arosaje.entity.mapper;
 
 import fr.epsi.mspr.arosaje.entity.Photo;
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoCreationDto;
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoDto;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoSaveRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PhotoMapper {
-    PhotoMapper INSTANCE = Mappers.getMapper(PhotoMapper.class);
 
-    PhotoCreationDto photoToPhotoCreationDto(Photo photo);
+    @Mapping(source = "userId", target = "user.id")
+    @Mapping(source = "ticketCommentId", target = "ticketComment.id")
+    Photo photoSaveRequestToPhoto(PhotoSaveRequest photoSaveRequest);
 
-    @Mapping(source = "createdAt", target = "createdAt")
-    PhotoResponseDto photoToPhotoResponseDto(Photo photo);
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "ticketComment.id", target = "ticketCommentId")
+    PhotoDto photoToPhotoDto(Photo photo);
 
-    void updatePhotoFromDto(PhotoCreationDto photoCreationDto, @MappingTarget Photo photo);
-
-    // mapping for userId
-    void updateUserId(Long userId, @MappingTarget Photo photo);
-
-    Photo photoCreationDtoToPhoto(PhotoCreationDto photoCreationDto);
+    void updatePhotoFromPhotoSaveRequest(PhotoSaveRequest photoSaveRequest, @MappingTarget Photo photo);
 }

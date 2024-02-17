@@ -66,7 +66,7 @@ public class Plant {
      * The plante_id column is the foreign key
      */
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "plante_id")
+    @JoinColumn(name = "plant_id")
     private List<Photo> photos;
 }
 

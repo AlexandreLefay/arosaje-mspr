@@ -27,7 +27,7 @@ VALUES (1, 'Paris', 'Rue de Rivoli', '75001', NOW(), 'user1@example.com', 'Jean'
         '0567891234', NOW(), 'lmoreau', 43.7102, 7.2620);
 
 -- Insertion fictive dans `photos` (le blob est représenté de manière simplifiée) TODO: Ajouter des photos aux commentaires et aux plantes
-INSERT INTO photos (created_at, image_blob, commentaire_id, user_id, plante_id)
+INSERT INTO photos (created_at, image_blob, commentaire_id, user_id, plant_id)
 VALUES (NOW(), 'blob1', NULL, 1, NULL),
        (NOW(), 'blob2', NULL, 2, NULL),
        (NOW(), 'blob3', NULL, 3, NULL),
