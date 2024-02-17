@@ -1,6 +1,6 @@
 package fr.epsi.mspr.arosaje.entity.dto.ticket;
 
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,6 @@ public class TicketCommentDTO {
     private LocalDateTime createdAt;
     private Long ticketId;
     private Long userId;
-    private List<PhotoResponseDto> photos;
+    private List<PhotoDto> photos;
 
 }

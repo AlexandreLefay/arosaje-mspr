@@ -1,79 +1,55 @@
 package fr.epsi.mspr.arosaje.controller;
 
-import fr.epsi.mspr.arosaje.entity.Photo;
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoCreationDto;
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
-import fr.epsi.mspr.arosaje.entity.mapper.PhotoMapper;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoSaveRequest;
 import fr.epsi.mspr.arosaje.service.PhotoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-
-@RestController
 @CrossOrigin(origins = "http://localhost:19006")
+@RestController
 @RequestMapping("/api/photos")
+@Slf4j
 public class PhotoController {
 
-    @Autowired
-    private PhotoService photoService;
-
-    @GetMapping
-    public ResponseEntity<List<PhotoResponseDto>> getAllPhotos() {
-        List<Photo> photos = photoService.findAll();
-        List<PhotoResponseDto> responseDtos = photos.stream()
-                .map(PhotoMapper.INSTANCE::photoToPhotoResponseDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(responseDtos);
+    /**
+     * Controller used to handle photo upload requests
+     */
+    private final PhotoService photoService;
+    public PhotoController(PhotoService photoService) {
+        this.photoService = photoService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PhotoResponseDto> getPhotoById(@PathVariable int id) {
-        Photo photo = photoService.findById(id);
-        return photo != null
-                ? ResponseEntity.ok(PhotoMapper.INSTANCE.photoToPhotoResponseDto(photo))
-                : ResponseEntity.notFound().build();
-    }
+    /**
+     * Method used to upload a photo
+     *
+     * @param file      MultipartFile containing the photo
+     * @param userId    Id of the user who uploaded the photo
+     * @param plantId   Id of the plant the photo is related to, can be null if the photo is related to a ticket comment
+     * @param commentId Id of the ticket comment the photo is related to, can be null if the photo is related to a plant
+     * @return ResponseEntity containing a message indicating the success or failure of the photo upload
+     */
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadPhoto(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") Long userId,
+            @RequestParam(value = "plantId", required = false) Long plantId,
+            @RequestParam(value = "commentId", required = false) Long commentId) {
 
-    @PostMapping
-    public ResponseEntity<PhotoResponseDto> createPhoto(@RequestBody PhotoCreationDto photoDto) {
-        Photo photo = PhotoMapper.INSTANCE.photoCreationDtoToPhoto(photoDto);
+        PhotoSaveRequest photoSaveRequest = new PhotoSaveRequest();
+        photoSaveRequest.setFile(file);
+        photoSaveRequest.setUserId(userId);
+        photoSaveRequest.setPlantId(plantId);
+        photoSaveRequest.setTicketCommentId(commentId);
 
-        // add userId when creating a photo
-        Photo createdPhoto = photoService.save(photo, photoDto.getUserId());
-
-        PhotoResponseDto responseDto = PhotoMapper.INSTANCE.photoToPhotoResponseDto(createdPhoto);
-        return ResponseEntity.status(201).body(responseDto);
-    }
-
-
-    @PutMapping("/{id}")
-    public ResponseEntity<PhotoResponseDto> updatePhoto(@PathVariable int id, @RequestBody PhotoCreationDto updatedPhotoDto) {
-        Photo updatedPhoto = photoService.findById(id);
-        if (updatedPhoto != null) {
-            PhotoMapper.INSTANCE.updatePhotoFromDto(updatedPhotoDto, updatedPhoto);
-
-            Photo result = photoService.update(id, updatedPhoto);
-            if (result != null) {
-                PhotoResponseDto responseDto = PhotoMapper.INSTANCE.photoToPhotoResponseDto(result);
-                return ResponseEntity.ok(responseDto);
-            }
+        try {
+            photoService.savePhoto(photoSaveRequest);
+            return ResponseEntity.ok("Photo uploaded successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload photo");
         }
-        return ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePhoto(@PathVariable int id) {
-        boolean deleted = photoService.deleteById(id);
-        return deleted
-                ? ResponseEntity.noContent().build()
-                : ResponseEntity.notFound().build();
     }
 }

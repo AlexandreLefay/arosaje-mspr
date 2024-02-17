@@ -1,15 +1,15 @@
 package fr.epsi.mspr.arosaje.entity.dto.user;
 
 import fr.epsi.mspr.arosaje.entity.dto.adresse.AddressDTO;
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoDto;
 import fr.epsi.mspr.arosaje.entity.dto.role.RoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.*;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -67,5 +67,5 @@ public class UserDTO {
     /**
      * The photos of the user.
      */
-    private PhotoResponseDto photo;
+    private PhotoDto photo;
 }

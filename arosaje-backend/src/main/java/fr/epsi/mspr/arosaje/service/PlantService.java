@@ -22,19 +22,18 @@ import java.util.stream.Collectors;
 public class PlantService {
 
     /**
+     * Error messages.
+     */
+    private static final String PLANT_IN_USE = "Plant with id {} is in use in a guardianship.";
+    private static final String PLANT_NOT_FOUND = "No plant found with id {}";
+    private static final String USER_NOT_FOUND = "No user found with id {}";
+    /**
      * Repositories for Plant, User, and Guardianship entities.
      */
     private final PlantRepository plantRepository;
     private final UserService userService;
     private final GuardianshipService guardianshipService;
     private final PlantMapper plantMapper;
-
-    /**
-     * Error messages.
-     */
-    private static final String PLANT_IN_USE = "Plant with id {} is in use in a guardianship.";
-    private static final String PLANT_NOT_FOUND = "No plant found with id {}";
-    private static final String USER_NOT_FOUND = "No user found with id {}";
 
     /**
      * Constructor for PlantService.
@@ -70,7 +69,7 @@ public class PlantService {
      */
     public List<PlantDto> findByUserId(Long userId) {
 
-        if (userService.userExists(userId)) {
+        if (!userService.userExists(userId)) {
             log.info(USER_NOT_FOUND, userId);
             throw new UserNotFoundException(userId);
         }
@@ -109,7 +108,7 @@ public class PlantService {
     public PlantDto create(PlantSaveRequest plantSaveRequest) {
         Plant plant = plantMapper.plantSaveRequestToPlant(plantSaveRequest);
 
-        if (userService.userExists(plantSaveRequest.getUserId())) {
+        if (!userService.userExists(plantSaveRequest.getUserId())) {
             log.info(USER_NOT_FOUND, plantSaveRequest.getUserId());
             throw new UserNotFoundException(plantSaveRequest.getUserId());
         }
@@ -147,7 +146,7 @@ public class PlantService {
      *
      * @param id The ID of the plant to delete.
      * @throws PlantNotFoundException if the plant with the specified ID does not exist.
-     * @throws PlantInUseException   if the plant with the specified ID is in use in a guardianship.
+     * @throws PlantInUseException    if the plant with the specified ID is in use in a guardianship.
      */
     public void delete(Long id) {
         if (!plantRepository.existsById(id)) {
@@ -163,6 +162,7 @@ public class PlantService {
 
     /**
      * Retrieve a plant entity by its ID.
+     *
      * @param id The ID of the plant to retrieve.
      * @return the plant with the specified ID.
      */

@@ -1,6 +1,6 @@
 package fr.epsi.mspr.arosaje.entity.dto.plant;
 
-import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoResponseDto;
+import fr.epsi.mspr.arosaje.entity.dto.photo.PhotoDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,5 +49,5 @@ public class PlantDto {
     /**
      * The photos of the plant.
      */
-    private List<PhotoResponseDto> photos;
+    private List<PhotoDto> photos;
 }
