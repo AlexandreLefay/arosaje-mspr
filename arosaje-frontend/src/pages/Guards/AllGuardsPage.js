@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import {  ScrollView, Text, Button } from 'react-native';
-import {  Card, } from 'react-native-paper';
+import {ScrollView, Text, TouchableOpacity} from 'react-native';
+import {  Card, Button } from 'react-native-paper';
 import axios from "axios";
 import FormatDate from "../../components/guards/FormatDate";
+import {Style} from "../../components/Style";
+import {apiIp} from "../../utils/config";
 
 const GuardianshipsPage = ({ navigation }) => {
 
     const [guardianshipsList, setGuardianshipsList] = useState([]);
     useEffect(() => {
         // Appel API pour récupérer les gardes
-        axios.get('http://localhost:9000/api/guardianships')
+        axios.get(apiIp+'/guardianships')
             .then(response => {
                 const guardsData = response.data;
                 // Appel API pour récupérer les plantes
-                axios.get('http://localhost:9000/api/plants')
+                axios.get(apiIp+'/plants')
                     .then(response => {
                         const plantsData = response.data;
                         // Appel API pour récupérer les users
-                        axios.get('http://localhost:9000/api/users')
+                        axios.get(apiIp+'/users')
                             .then(response => {
                                 const usersData = response.data;
                                 // Associez chaque garde à une plante
@@ -43,27 +45,33 @@ const GuardianshipsPage = ({ navigation }) => {
     }, []);
 
     return (
-        <ScrollView>
-        <p>Liste de mes gardes (en tant qu'user 1)</p>
-
+        <ScrollView style={Style.container}>
             {guardianshipsList.map((guardianships, index) => (
-                <Card key={index} style={{ margin: 10 }}
-                >
-                    <Button title={guardianships.name}
-                    onPress={() => navigation.navigate('Guard', {guardId: guardianships.id})}/>
-                    <Text>Garde n° : {guardianships.id}</Text>
-                    <Text>Propriétaire : {guardianships.owner.username}</Text>
-                    <Text>Plante associée : {guardianships.plant.name} </Text>
-                    <Text>Date de début de la garde : <FormatDate date={guardianships.startDate}/></Text>
-                    <Text>Date de fin de la garde : <FormatDate date={guardianships.endDate}/></Text>
+                <Card key={index} style={Style.card}>
+                  <TouchableOpacity
+                    title={guardianships.name}
+                    onPress={() => navigation.navigate('Guard', {guardId: guardianships.id})}>
+                    <Text title={guardianships.title}
+                          style={Style.title}
+                          onPress={() => navigation.navigate('guard', {guardId: guardianships.id})}>
+                      {guardianships.title}</Text>
+                    <Text style={Style.bulletPoint}>Propriétaire : {guardianships.owner.username}</Text>
+                    {guardianships.guardian ? (
+                      <Text style={Style.bulletPoint}>Gardé par : { guardianships.guardian.username } </Text>) : (
+                        <Button style={Style.button}>Me proposer en tant que gardien </Button>
+                    )}
+                    <Text style={Style.bulletPoint}>Plante associée : {guardianships.plant.name} </Text>
+                    <Text style={Style.bulletPoint}>Date de début de la garde : <FormatDate date={guardianships.startDate}/></Text>
+                    <Text style={Style.bulletPoint}>Date de fin de la garde : <FormatDate date={guardianships.endDate}/></Text>
+                  </TouchableOpacity>
                 </Card>
             ))}
 
         <Button
+          style={Style.button}
             title="Ajouter"
-            onPress={() => navigation.navigate('AddGuardianships')}
-        />
-
+            onPress={() => navigation.navigate('AddGuard')}
+        >Ajouter garde</Button>
         </ScrollView>
     );
 

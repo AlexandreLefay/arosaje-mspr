@@ -4,7 +4,7 @@ import GuardForm from '../../components/guards/GuardForm';
 import {Style} from "../../components/Style";
 const AddGuardPage = ({ navigation }) => {
   return (
-      <ScrollView style={Style.containerView}>
+      <ScrollView style={Style.container}>
         <GuardForm navigation={navigation} />
       </ScrollView>
   );

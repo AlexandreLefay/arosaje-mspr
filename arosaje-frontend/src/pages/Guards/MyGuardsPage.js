@@ -1,31 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import {ScrollView, Text, Button, TouchableOpacity} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {  Card, } from 'react-native-paper';
 import axios from "axios";
 import FormatDate from "../../components/guards/FormatDate";
 import {Style} from "../../components/Style";
-import {getGuardByUserId} from "../../api/GuardianshipsAPI/GuardiashipsAPI";
+import {apiIp} from "../../utils/config";
 
 
 const MyGuardsPage = ({ navigation }) => {
 
-    const [guardianshipsList, setGuardianshipsList] = useState([]);
+    const [guardsList, setGuardsList] = useState([]);
     useEffect(() => {
         // Appel API pour récupérer les gardes
-        axios.get('http://localhost:9000/api/guardianships/user/{ownerUserId}?ownerUserId=1')
+        axios.get(apiIp+'/guardianships/user/{ownerUserId}?ownerUserId=1')
             .then(response => {
                 const guardsData = response.data;
-                console.log(guardsData)
                 // Appel API pour récupérer les plantes
-                axios.get('http://localhost:9000/api/plants')
+                axios.get(apiIp+'/plants')
                     .then(response => {
                         const plantsData = response.data;
-                        console.log(plantsData)
                         // Appel API pour récupérer les users
-                        axios.get('http://localhost:9000/api/users')
+                        axios.get(apiIp+'/users')
                             .then(response => {
                                 const usersData = response.data;
-                                console.log(usersData)
                                 // Associez chaque garde à une plante
                                 const updatedGuards = guardsData.map(guard => {
                                     const plant = plantsData.find(plant => plant.id === guard.plantId);
@@ -33,8 +30,7 @@ const MyGuardsPage = ({ navigation }) => {
                                     const owner  = usersData.find(owner => owner.id === guard.ownerId);
                                     return {...guard, plant: plant, guardian: guardian, owner: owner};
                                 });
-                                setGuardianshipsList(updatedGuards);console.log("coucou")
-                              console.log(getGuardByUserId.guard)
+                                setGuardsList(updatedGuards);
                             })
                             .catch(error => {
                                 console.error('Erreur lors de la récupération des users :', error);
@@ -47,26 +43,40 @@ const MyGuardsPage = ({ navigation }) => {
             .catch(error => {
                 console.error('Erreur lors de la récupération des gardes :', error);
             });
-
     }, []);
 
+    const renderGuard =({item: guard}) =>(
+        <View>
+          <Card key={guard.id} style={Style.card}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Guard', {guardId: guard.id})}
+              title='MyGardsPage'>
+
+              <Text title={guard.title}
+                    style={Style.title}
+                    onPress={() => navigation.navigate('guard', {guardId: guard.id})}>
+                {guard.title}</Text>
+              <Text style={Style.bulletPoint}>Plante associée : {guard.plant.name} </Text>
+              <Text style={Style.bulletPoint}>Du <FormatDate date={guard.startDate}/> au
+                <FormatDate date={guard.endDate}/></Text>
+              {guard.guardian ? (
+                  <Text style={Style.bulletPoint}>Gardé par : { guard.guardian.username } </Text>) :
+                (<Text style={Style.bulletPoint}>Gardien à trouver !!! </Text>
+                )}
+            </TouchableOpacity>
+          </Card>
+        </View>
+        );
+
     return (
-        <ScrollView style={Style.container}>
-                {guardianshipsList.map((guardianships, index) => (
-                    <Card key={index} style={Style.container}>
-                      <TouchableOpacity onPress={() => navigation.navigate('Guard', {guardId: guardianships.id})}  title='MyGardsPage'>
-                        <Text title={guardianships.title}
-                                onPress={() => navigation.navigate('guard', {guardId: guardianships.id})}>{guardianships.title}</Text>
-                        <Text>Propriétaire : {guardianships.owner.username}</Text>
-                        <Text>Plante associée : {guardianships.plant.name} </Text>
-                        <Text>Du <FormatDate date={guardianships.startDate}/> au <FormatDate date={guardianships.endDate}/></Text>
-                            {guardianships.guardian !== '2' ? (
-                              <Text>Gardé par : { guardianships.guardian.username } </Text>) : (<Text>Gardien à trouver !!! </Text>
-                        )}
-                      </TouchableOpacity>
-                    </Card>
-                ))}
-        </ScrollView>
+        <View style={Style.container}>
+          <FlatList data={guardsList}
+                    renderItem={renderGuard}
+                    keyExtractor={item => item.id.toString()}
+                    numColumns={1}
+                    contentContainerStyle={Style.container}
+          />
+        </View>
     );
 }
 export default MyGuardsPage
