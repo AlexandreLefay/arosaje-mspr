@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Camera} from 'expo-camera';
+import {MaterialIcons} from '@expo/vector-icons';
 import axios from "axios";
 
 const TakePhotoScreen = ({navigation, route}) => {
@@ -27,16 +28,16 @@ const TakePhotoScreen = ({navigation, route}) => {
             formData.append('file', {uri: localUri, name: filename, type});
             formData.append('userId', route.params.userId);
             formData.append('plantId', route.params.plantId);
-            console.log(formData);
+
             try {
                 await axios.post('http://192.168.1.37:9000/api/photos/upload', formData, {
                     headers: {
                         'Accept': 'application/json',
                     },
                 });
-                navigation.navigate('AddPlant');
+                navigation.goBack();
             } catch (error) {
-                console.error(error);
+                Alert.alert("Error", "Failed to upload photo.");
             }
         }
     };
@@ -49,9 +50,13 @@ const TakePhotoScreen = ({navigation, route}) => {
     }
     return (
         <View style={styles.container}>
-            <Camera style={styles.camera} ref={ref => setCameraRef(ref)}>
+            <Camera style={styles.camera} ref={setCameraRef}>
                 <View style={styles.buttonContainer}>
-                    <Button title="Take Photo" onPress={takePicture}/>
+                    <TouchableOpacity
+                        style={styles.captureButton}
+                        onPress={takePicture}>
+                        <MaterialIcons name="camera" size={36} color="#FFF"/>
+                    </TouchableOpacity>
                 </View>
             </Camera>
         </View>
@@ -64,12 +69,18 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
+        justifyContent: 'flex-end',
     },
     buttonContainer: {
-        flex: 1,
-        backgroundColor: 'transparent',
         flexDirection: 'row',
-        margin: 20,
+        justifyContent: 'center',
+        marginBottom: 36,
+    },
+    captureButton: {
+        alignItems: 'center',
+        backgroundColor: 'green',
+        borderRadius: 50,
+        padding: 15,
     },
 });
 

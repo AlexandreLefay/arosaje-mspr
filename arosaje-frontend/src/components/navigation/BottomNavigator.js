@@ -14,34 +14,35 @@ const TicketRoute = () => <TicketScreen/>;
 const PlantRoute = () => <PlantScreen/>;
 const GuardRoute = () => <GuardScreen/>;
 export default function BottomNavigator() {
-  const [index, setIndex] = React.useState(0);
-  const navigation = useNavigation(); // Accès à l'objet navigation
-  const [routes] = React.useState([
-    {key: 'home', title: 'Accueil', focusedIcon: 'heart', unfocusedIcon: 'heart-outline'},
-    {key: 'profil', title: 'Profil', focusedIcon: 'account', unfocusedIcon: 'account-outline'},
-    {key: 'ticket', title: 'Ticket', focusedIcon: 'ticket', unfocusedIcon: 'ticket-outline'},
-    {key: 'plant', title: 'Plant', focusedIcon: 'sprout', unfocusedIcon: 'sprout-outline'},
-    {key: 'garde', title: 'Garde', focusedIcon: 'home-circle', unfocusedIcon: 'home-circle-outline'},
-  ]);
+    const [index, setIndex] = React.useState(0);
+    const navigation = useNavigation(); // Accès à l'objet navigation
+    const [routes] = React.useState([
+        {key: 'home', title: 'Accueil', focusedIcon: 'heart', unfocusedIcon: 'heart-outline'},
+        {key: 'profil', title: 'Profil', focusedIcon: 'account', unfocusedIcon: 'account-outline'},
+        {key: 'ticket', title: 'Ticket', focusedIcon: 'ticket', unfocusedIcon: 'ticket-outline'},
+        {key: 'plant', title: 'Plant', focusedIcon: 'sprout', unfocusedIcon: 'sprout-outline'},
+        {key: 'garde', title: 'Garde', focusedIcon: 'home-circle', unfocusedIcon: 'home-circle-outline'},
+    ]);
 
-  React.useEffect(() => {
-    const routeTitle = routes[index].title;
-    navigation.setParams({title: routeTitle});
-  }, [index, navigation]);
+    React.useEffect(() => {
+        const routeTitle = routes[index].title;
+        navigation.setParams({title: routeTitle});
+    }, [index, navigation]);
 
-  const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
-    profil: ProfilRoute,
-    ticket: TicketRoute,
-    plant: PlantRoute,
-    garde: GuardRoute,
-  });
+    const renderScene = BottomNavigation.SceneMap({
+        home: HomeRoute,
+        profil: ProfilRoute,
+        ticket: TicketRoute,
+        plant: PlantRoute,
+        garde: GuardRoute,
+    });
 
-  return (
-    <BottomNavigation
-      navigationState={{index, routes}}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
-  );
+    return (
+        <BottomNavigation
+            navigationState={{index, routes}}
+            onIndexChange={setIndex}
+            renderScene={renderScene}
+            barStyle={{backgroundColor: '#c1eea7'}}
+        />
+    );
 }
