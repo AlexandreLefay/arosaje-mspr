@@ -14,8 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:19006")
@@ -49,6 +49,7 @@ public class LoginController {
 
         // Récupérer les informations de l'utilisateur
         String username = userDetails.getUsername();
+        int userId = userDetails.getId();
         Set<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
@@ -58,6 +59,6 @@ public class LoginController {
         headers.add("X-Authorization", jwt);
 
         // Retourner la réponse avec les détails de l'utilisateur et le JWT dans l'en-tête
-        return ResponseEntity.ok().headers(headers).body(new LoginResponse(username, roles.toString()));
+        return ResponseEntity.ok().headers(headers).body(new LoginResponse(username, userId, roles.toString()));
     }
 }
