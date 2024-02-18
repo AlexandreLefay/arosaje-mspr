@@ -8,6 +8,8 @@ import AddGuardPage from "../pages/Guards/AddGuardPage";
 import AllGuardsPage from "../pages/Guards/AllGuardsPage";
 import GuardingPage from "../pages/Guards/GuardingPage";
 import GuardPage from "../pages/Guards/GuardPage";
+import AddPlantScreen from "../screen/Plant/AddPlantScreen";
+import TakePhotoScreen from "../screen/Plant/TakePhotoScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,32 +20,34 @@ function AppNavigator() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="Login" component={LoginScreen}/>
-                <Stack.Screen
-                    name="Home"
-                    component={BottomNavigator}
+                <Stack.Screen name="Home" component={BottomNavigator}
                     options={({route}) => ({
                         title: route.params?.title || 'Titre par Défaut',
-                    })}
-                />
-              <Stack.Screen name="MyGuards" component={MyGuardsPage}
-                options={{ title: 'Mes gardes' }}/>
-              <Stack.Screen
-                name="AllGuards" component={AllGuardsPage}
-                options={{ title: 'Proposer de garder des plantes' }}/>
-              <Stack.Screen
-                name="Guarding" component={GuardingPage}
-                options={{ title: 'Mes gardes en cours' }}/>
-              <Stack.Screen
-                name="AddGuard" component={AddGuardPage}
-                options={{ title: 'Ajouter une garde' }}/>
-              <Stack.Screen
-                name="Guard" component={GuardPage}
-                options={{ title: 'Gard' }}/>
-
-              <Stack.Screen name="Profil" component={BottomNavigator}/>
-              <Stack.Screen name="Ticket" component={BottomNavigator}/>
-              <Stack.Screen name="Plant"  component={BottomNavigator}/>
-              <Stack.Screen name="Garde" component={BottomNavigator}></Stack.Screen>
+                    })}/>
+                <Stack.Screen name="MyGuards" component={MyGuardsPage}
+                              options={{title: 'Mes gardes'}}/>
+                <Stack.Screen
+                    name="AllGuards" component={AllGuardsPage}
+                    options={{title: 'Proposer de garder des plantes'}}/>
+                <Stack.Screen
+                    name="Guarding" component={GuardingPage}
+                    options={{title: 'Mes gardes en cours'}}/>
+                <Stack.Screen
+                    name="AddGuard" component={AddGuardPage}
+                    options={{title: 'Ajouter une garde'}}/>
+                <Stack.Screen
+                    name="Guard" component={GuardPage}
+                    options={{title: 'Gard'}}/>
+                <Stack.Screen
+                    name="AddPlant" component={AddPlantScreen}
+                    options={{title: 'Plant'}}/>
+                <Stack.Screen
+                    name="TakePhoto" component={TakePhotoScreen}
+                    options={{title: 'Photo'}}/>
+                <Stack.Screen name="Profil" component={BottomNavigator}/>
+                <Stack.Screen name="Ticket" component={BottomNavigator}/>
+                <Stack.Screen name="Plant" component={BottomNavigator}/>
+                <Stack.Screen name="Garde" component={BottomNavigator}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     );
