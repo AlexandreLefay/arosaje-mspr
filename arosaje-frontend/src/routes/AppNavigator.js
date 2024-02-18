@@ -10,6 +10,7 @@ import GuardingPage from "../pages/Guards/GuardingPage";
 import GuardPage from "../pages/Guards/GuardPage";
 import AddPlantScreen from "../screen/Plant/AddPlantScreen";
 import TakePhotoScreen from "../screen/Plant/TakePhotoScreen";
+import AddTicketScreen from "../screen/Ticket/AddTicketScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,9 +22,9 @@ function AppNavigator() {
             <Stack.Navigator>
                 <Stack.Screen name="Login" component={LoginScreen}/>
                 <Stack.Screen name="Home" component={BottomNavigator}
-                    options={({route}) => ({
-                        title: route.params?.title || 'Titre par Défaut',
-                    })}/>
+                              options={({route}) => ({
+                                  title: route.params?.title || 'Titre par Défaut',
+                              })}/>
                 <Stack.Screen name="MyGuards" component={MyGuardsPage}
                               options={{title: 'Mes gardes'}}/>
                 <Stack.Screen
@@ -44,6 +45,9 @@ function AppNavigator() {
                 <Stack.Screen
                     name="TakePhoto" component={TakePhotoScreen}
                     options={{title: 'Photo'}}/>
+                <Stack.Screen
+                    name="AddTicket" component={AddTicketScreen}
+                    options={{title: 'Ticket'}}/>
                 <Stack.Screen name="Profil" component={BottomNavigator}/>
                 <Stack.Screen name="Ticket" component={BottomNavigator}/>
                 <Stack.Screen name="Plant" component={BottomNavigator}/>
