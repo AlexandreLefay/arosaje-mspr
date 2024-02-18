@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Text, View, Platform } from 'react-native';
 import {Style} from "../Style";
 import moment from "moment";
 
 const MyDatePicker = (props) => {
   const [date, setDate] = useState(new Date())
+  const[min, setMin] = useState()
+  const[max, setMax] = useState()
+
+  useEffect(()=>{
+    setMin(props.min)
+    setMax(props.max)
+  })
+
 
   const dateChange = (event, selectedDate) => {
     const currentDate = selectedDate || date
@@ -18,7 +26,7 @@ const MyDatePicker = (props) => {
 
     {Platform.OS === 'web' ? (
         <input type={"date"}
-               onChange={dateChange}/>):
+               onChange={dateChange} min={min} max={{max}}/>):
       (
         <Text style={Style.text} onChange={dateChange}>
           {`${('0' + date.getDate()).slice(-2)}/${('0' + date.getMonth()).slice(-2)}/${date.getFullYear()}`}

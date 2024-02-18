@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {Alert, Button, StyleSheet, TextInput, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import axios from 'axios';
 import {apiIp} from "../../utils/config";
+import { TextInput, Button} from 'react-native-paper';
 
 /**
  * Écran d'ajout de plante, redirige vers l'écran de prise de photo.
@@ -47,7 +48,7 @@ const AddPlantScreen = ({navigation}) => {
                 onChangeText={(text) => setPlant({...plant, careInstructions: text})}
                 style={styles.input}
             />
-            <Button title="Ajouter la plante" onPress={handleSubmit}/>
+          <Button title="Ajouter la plante" onPress={handleSubmit} style={styles.button}>Ajouter la plante</Button>
         </View>
     );
 };
@@ -63,6 +64,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         padding: 10,
         borderRadius: 5,
+    },
+    button: {
+      backgroundColor: '#42a83e',
+      paddingVertical: 8,
+      marginHorizontal: 16,
+      marginBottom: 16,
     },
 });
 

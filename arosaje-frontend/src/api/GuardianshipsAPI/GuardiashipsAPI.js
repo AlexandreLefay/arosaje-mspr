@@ -1,15 +1,16 @@
-import {Button} from "react-native";
+import {Button} from 'react-native-paper';
 import axios from "axios";
 import {useNavigation} from "@react-navigation/native";
 import {apiIp} from "../../utils/config";
+import {Style} from "../../components/Style";
 export const PostGuardianships =(props) => {
   const navigation = useNavigation();
   
   const postRequest = () => {
-    axios.post(apiIp`/guardianships`,{
+    console.log(props)
+    axios.post(apiIp+'/guardianships',{
       "statusId": props.form.statusId,
       "ownerId": props.form.ownerId,
-      "guardianId": props.form.ownerId,
       "plantId": props.form.plantId,
       "title": props.form.title,
       "description": props.form.description,
@@ -28,14 +29,14 @@ export const PostGuardianships =(props) => {
   }
 
   return(
-      <Button title={props.title} onPress={postRequest}/>
+    <Button style={Style.button} title={props.title} onPress={postRequest}>Ajouter</Button>
   )
 }
 
 export const getGuardByUserId = async (props) => {
- return  await axios.get(`${apiUrl}/guardianships/user/{ownerUserId}?ownerUserId=${props.userId}`);
+ return  await axios.get(apiIp+'/guardianships/user/{ownerUserId}?ownerUserId='+props.userId);
 }
 
 export const getGuardById = async (props) => {
-  return await axios.get(`${apiUrl}/guardianships/{id}?id=${props.guardId}`);
+  return await axios.get(apiIp+'/guardianships/{id}?id='+props.guardId);
 }
