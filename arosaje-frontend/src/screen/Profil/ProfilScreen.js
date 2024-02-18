@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {Avatar, Card, Paragraph, Text, Title} from 'react-native-paper';
 import axios from 'axios';
 import DefaultProfileImg from './defaultProfile.jpg';
+import {apiIp} from "../../utils/config";
 
 function ProfilScreen() {
     const [userData, setUserData] = useState(null);

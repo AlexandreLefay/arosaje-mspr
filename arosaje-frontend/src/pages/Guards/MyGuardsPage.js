@@ -52,8 +52,6 @@ const MyGuardsPage = ({ navigation }) => {
 
     return (
         <ScrollView style={Style.container}>
-            <p>Liste de mes gardes (en tant qu'user 1)</p>
-
                 {guardianshipsList.map((guardianships, index) => (
                     <Card key={index} style={Style.container}>
                       <TouchableOpacity onPress={() => navigation.navigate('Guard', {guardId: guardianships.id})}  title='MyGardsPage'>
