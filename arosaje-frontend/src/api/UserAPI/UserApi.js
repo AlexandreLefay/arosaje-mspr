@@ -1,6 +1,6 @@
 import axios from "axios";
-const apiUrl = "http://localhost:9000/api/";
+import {apiIp} from "../../utils/config";
 
 export const geUserById = async (props) => {
-  return  await axios.get(`${apiUrl}users/${props.userId}`);
+  return  await axios.get(apiIp`users/${props.userId}`);
 }

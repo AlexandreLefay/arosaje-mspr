@@ -1,8 +1,7 @@
 import axios from "axios";
-
-const apiUrl = "http://localhost:9000/api";
+import {apiIp} from "../../utils/config";
 
 
 export const getPlants = async () => {
-    return await axios.get(`${apiUrl}/plants/user/1`);
+    return await axios.get(apiIp`/plants/user/1`);
 }

@@ -16,6 +16,7 @@ import {
 } from "react-native";
 
 import AppLogo from './logo.png';
+import {apiIp} from "../../utils/config";
 
 function LoginScreen() {
     const navigation = useNavigation();
@@ -30,7 +31,7 @@ function LoginScreen() {
     };
 
     const handleSubmit = () => {
-        axios.post('http://192.168.1.37:9000/api/login', {username, password})
+        axios.post(apiIp+'/login', {username, password})
             .then(response => {
                 if (response.data.userId) {
                     AsyncStorage.setItem('CURRENT_USER', JSON.stringify(response.data)).then(() => {

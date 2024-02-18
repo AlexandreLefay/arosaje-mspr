@@ -10,7 +10,7 @@ function ProfilScreen() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://192.168.1.37:9000/api/users/1');
+                const response = await axios.get(apiIp+'/users/1');
                 setUserData(response.data);
             } catch (error) {
                 console.error("Erreur lors de la récupération des données de l'utilisateur", error);

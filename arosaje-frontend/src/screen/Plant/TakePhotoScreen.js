@@ -3,6 +3,7 @@ import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Camera} from 'expo-camera';
 import {MaterialIcons} from '@expo/vector-icons';
 import axios from "axios";
+import {apiIp} from "../../utils/config";
 
 const TakePhotoScreen = ({navigation, route}) => {
     const [hasPermission, setHasPermission] = useState(null);
@@ -30,7 +31,7 @@ const TakePhotoScreen = ({navigation, route}) => {
             formData.append('plantId', route.params.plantId);
 
             try {
-                await axios.post('http://192.168.1.37:9000/api/photos/upload', formData, {
+                await axios.post(apiIp+'/photos/upload', formData, {
                     headers: {
                         'Accept': 'application/json',
                     },

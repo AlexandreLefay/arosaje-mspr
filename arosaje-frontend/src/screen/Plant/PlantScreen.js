@@ -4,6 +4,7 @@ import axios from "axios";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {AntDesign} from '@expo/vector-icons';
 import {Card} from 'react-native-paper';
+import {apiIp} from "../../utils/config";
 
 const PlantScreen = () => {
     const navigation = useNavigation();
@@ -11,7 +12,7 @@ const PlantScreen = () => {
 
     useFocusEffect(
         useCallback(() => {
-            axios.get('http://192.168.1.37:9000/api/plants/user/1')
+            axios.get(apiIp+'/plants/user/1')
                 .then((response) => {
                     const updatedPlants = response.data.map(plant => ({
                         ...plant,
@@ -39,7 +40,7 @@ const PlantScreen = () => {
                 {
                     text: "Supprimer",
                     onPress: () => {
-                        axios.delete(`http://192.168.1.37:9000/api/plants/${plantId}`)
+                        axios.delete(apiIp+`/api/plants/${plantId}`)
                             .then(() => {
                                 setPlants(plants.filter(plant => plant.id !== plantId));
                             })

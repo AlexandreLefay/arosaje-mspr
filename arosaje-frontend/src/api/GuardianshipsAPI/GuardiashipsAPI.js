@@ -1,12 +1,12 @@
 import {Button} from "react-native";
 import axios from "axios";
 import {useNavigation} from "@react-navigation/native";
-const apiUrl = "http://localhost:9000/api";
+import {apiIp} from "../../utils/config";
 export const PostGuardianships =(props) => {
   const navigation = useNavigation();
   
   const postRequest = () => {
-    axios.post(`${apiUrl}/guardianships`,{
+    axios.post(apiIp`/guardianships`,{
       "statusId": props.form.statusId,
       "ownerId": props.form.ownerId,
       "guardianId": props.form.ownerId,

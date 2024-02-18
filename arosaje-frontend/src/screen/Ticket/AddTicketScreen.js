@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Alert, Button, StyleSheet, TextInput, View} from 'react-native';
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {apiIp} from "../../utils/config";
 
 const CreateTicketScreen = ({navigation}) => {
     const [title, setTitle] = useState('');
@@ -17,7 +18,7 @@ const CreateTicketScreen = ({navigation}) => {
         }
 
         try {
-            const response = await axios.post('http://192.168.1.37:9000/api/tickets', {
+            const response = await axios.post(apiIp+'/tickets', {
                 title,
                 description,
                 userId,
