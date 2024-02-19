@@ -29,9 +29,8 @@ const GuardForm = (navigation) => {
   };
   const changeStartDate = (date) => {
     handleInputChange('startDate', date)
-    setStartDate(date)
   }
-  const changeEndDate = (date) =>{
+  const changeEndDate = (date) => {
     handleInputChange('endDate', date)
     setEndDate(date)
   }
@@ -44,7 +43,7 @@ const GuardForm = (navigation) => {
   };
 
   function dateAddYears(a, b) {
-    var d = new Date(b || new Date()),
+    let d = new Date(b || new Date()),
       c = d.getMonth();
     d.setFullYear(d.getFullYear() + a);
     if (d.getMonth() !== c) {

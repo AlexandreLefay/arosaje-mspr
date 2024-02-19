@@ -15,7 +15,7 @@ export const PostGuardianships =(props) => {
       "title": props.form.title,
       "description": props.form.description,
       "startDate": props.form.startDate,
-      "endDate": props.form.startDate
+      "endDate": props.form.endDate
     }).
     then(response => {
       savingPopup(response.data)
@@ -25,7 +25,7 @@ export const PostGuardianships =(props) => {
 
   const savingPopup = (guard) => {
     alert("La garde "+ guard.title +" a bien été sauvegardée")
-    navigation.navigate('Guard', {guardId: guard.id})
+    navigation.navigate('MyGuards')
   }
 
   return(
@@ -40,3 +40,4 @@ export const getGuardByUserId = async (props) => {
 export const getGuardById = async (props) => {
   return await axios.get(apiIp+'/guardianships/{id}?id='+props.guardId);
 }
+

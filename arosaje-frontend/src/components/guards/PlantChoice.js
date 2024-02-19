@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View} from 'react-native';
+import {LayoutAnimation, View} from 'react-native';
 import {Style} from "../Style";
 import { List } from 'react-native-paper';
 
@@ -9,7 +9,10 @@ const PlantChoice =(props) =>{
   const [expanded, setExpanded] = React.useState(false);
   const [plant, setPlant] = useState({name: "Choisir plante"});
 
-  const handlePress = () => setExpanded(!expanded);
+  const handlePress = () => {
+    LayoutAnimation.easeInEaseOut();
+    setExpanded(!expanded);
+  }
 
 
   const [plants, setPlants ] = useState([]);
