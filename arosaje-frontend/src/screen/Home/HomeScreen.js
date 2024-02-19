@@ -12,7 +12,7 @@ function HomeScreen() {
             <Card style={styles.card}>
                 <Card.Cover source={HomeImage}/>
                 <Card.Content>
-                    <Text style={styles.title}>Bienvenue sur Arosaje!</Text>
+                    <Text style={styles.title}>Bienvenue sur A'rosa-je!</Text>
                     <Text style={styles.paragraph}>
                         Arosaje est votre application du quotidien pour vous aider à soigner vos plantes.
                     </Text>
@@ -21,12 +21,12 @@ function HomeScreen() {
             <Card style={styles.card}>
                 <Card.Content>
                     <Text style={styles.heading}>Fonctionnalités Clés :</Text>
-                    <Text style={styles.bulletPoint}>• Sauvegarde des vos plantes avec la plus belle des photos</Text>
-                    <Text style={styles.bulletPoint}>• Création d'un ticket pour demander de l'aide à notre communauté
-                        afin de traiter au mieux votre plantes</Text>
-                    <Text style={styles.bulletPoint}>• Demande de garde, vous partez en vacances ou vous souhaitez que
-                        votre plante se refasse un beauté ? Vous pouvez la laisser en garde chez un de nos botaniste,
-                        membre de la communauté</Text>
+                    <Text style={styles.bulletPoint}>• Sauvegardez vos plantes avec leurs plus belles photos.</Text>
+                    <Text style={styles.bulletPoint}>• Créez un ticket pour demander de l'aide à notre communauté afin
+                        de prendre soin de vos plantes de la meilleure façon.</Text>
+                    <Text style={styles.bulletPoint}>• Faites une demande de garde : vous partez en vacances ou
+                        souhaitez simplement que votre plante soit chouchoutée ? Laissez-la entre les mains d'un membre
+                        de notre communauté.</Text>
                 </Card.Content>
             </Card>
             <Button mode="contained" style={styles.button} onPress={() => navigation.navigate('AddPlant')}>
