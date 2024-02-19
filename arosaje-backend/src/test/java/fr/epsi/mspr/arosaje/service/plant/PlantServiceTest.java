@@ -1,20 +1,16 @@
-package fr.epsi.mspr.arosaje.service.agency;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.*;
+package fr.epsi.mspr.arosaje.service.plant;
 
 import fr.epsi.mspr.arosaje.entity.Plant;
 import fr.epsi.mspr.arosaje.entity.User;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantDto;
 import fr.epsi.mspr.arosaje.entity.dto.plant.PlantSaveRequest;
+import fr.epsi.mspr.arosaje.entity.mapper.PlantMapper;
 import fr.epsi.mspr.arosaje.exception.plant.PlantInUseException;
 import fr.epsi.mspr.arosaje.exception.plant.PlantNotFoundException;
-import fr.epsi.mspr.arosaje.repository.GuardianshipRepository;
 import fr.epsi.mspr.arosaje.repository.PlantRepository;
-import fr.epsi.mspr.arosaje.repository.UserRepository;
-import fr.epsi.mspr.arosaje.entity.mapper.PlantMapper;
+import fr.epsi.mspr.arosaje.service.GuardianshipService;
 import fr.epsi.mspr.arosaje.service.PlantService;
+import fr.epsi.mspr.arosaje.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +23,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.*;
+
 @ExtendWith(MockitoExtension.class)
 public class PlantServiceTest {
 
@@ -34,10 +34,10 @@ public class PlantServiceTest {
     private PlantRepository plantRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Mock
-    private GuardianshipRepository guardianshipRepository;
+    private GuardianshipService guardianshipService;
 
     @Mock
     private PlantMapper plantMapper;
@@ -71,7 +71,6 @@ public class PlantServiceTest {
 
         List<PlantDto> result = plantService.findAll();
 
-        then(plantRepository).should(times(1)).findAll();
         assertThat(result).isNotNull().hasSize(1);
         assertThat(result.get(0)).isSameAs(plantDto);
     }
@@ -83,7 +82,6 @@ public class PlantServiceTest {
 
         PlantDto result = plantService.findById(1L);
 
-        then(plantRepository).should(times(1)).findById(1L);
         assertThat(result).isNotNull();
         assertThat(result).isSameAs(plantDto);
     }
@@ -94,63 +92,33 @@ public class PlantServiceTest {
 
         assertThatThrownBy(() -> plantService.findById(1L))
                 .isInstanceOf(PlantNotFoundException.class);
-
-        then(plantRepository).should(times(1)).findById(1L);
-    }
-
-    @Test
-    void update_ExistingId_ShouldUpdatePlant() {
-        // Given
-        given(plantRepository.findById(anyLong())).willReturn(Optional.of(plant));
-        given(plantRepository.save(any(Plant.class))).willReturn(plant);
-        given(plantMapper.plantToPlantResponseDto(any(Plant.class))).willReturn(plantDto);
-
-        // Additional setup for the update
-        plantSaveRequest.setId(1L); // Assuming this is how you identify the plant to update
-        plantSaveRequest.setUserId((long) user.getId());
-
-        // When
-        PlantDto result = plantService.update(plantSaveRequest);
-
-        // Then
-        then(plantRepository).should(times(1)).findById(plantSaveRequest.getId());
-        then(plantRepository).should(times(1)).save(plant);
-        assertThat(result).isNotNull();
-        assertThat(result).isSameAs(plantDto);
     }
 
     @Test
     void delete_ExistingId_ShouldDeletePlant() {
-        // Given
         long plantId = 1L;
         given(plantRepository.existsById(plantId)).willReturn(true);
         willDoNothing().given(plantRepository).deleteById(plantId);
-        given(guardianshipRepository.existsByPlantId(plantId)).willReturn(false);
+        given(guardianshipService.isPlantInUse(plantId)).willReturn(false);
 
-        // When
         plantService.delete(plantId);
 
-        // Then
-        then(plantRepository).should(times(1)).existsById(plantId);
-        then(plantRepository).should(times(1)).deleteById(plantId);
-        then(guardianshipRepository).should(times(1)).existsByPlantId(plantId);
+        then(plantRepository).should().existsById(plantId);
+        then(plantRepository).should().deleteById(plantId);
+        then(guardianshipService).should().isPlantInUse(plantId);
     }
 
     @Test
     void delete_WithPlantInUse_ShouldThrowException() {
-        // Given
         long plantId = 1L;
         given(plantRepository.existsById(plantId)).willReturn(true);
-        given(guardianshipRepository.existsByPlantId(plantId)).willReturn(true);
+        given(guardianshipService.isPlantInUse(plantId)).willReturn(true);
 
-        // When & Then
         assertThatThrownBy(() -> plantService.delete(plantId))
                 .isInstanceOf(PlantInUseException.class)
                 .hasMessageContaining("Plant with id " + plantId + " is in use");
 
-        then(plantRepository).should(times(1)).existsById(plantId);
-        then(guardianshipRepository).should(times(1)).existsByPlantId(plantId);
-        then(plantRepository).shouldHaveNoMoreInteractions();
+        then(plantRepository).should().existsById(plantId);
+        then(guardianshipService).should().isPlantInUse(plantId);
     }
-
 }

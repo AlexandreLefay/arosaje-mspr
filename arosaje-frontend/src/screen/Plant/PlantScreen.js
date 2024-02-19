@@ -12,7 +12,7 @@ const PlantScreen = () => {
 
     useFocusEffect(
         useCallback(() => {
-            axios.get(apiIp+'/plants/user/1')
+            axios.get(apiIp + '/plants/user/1')
                 .then((response) => {
                     const updatedPlants = response.data.map(plant => ({
                         ...plant,
@@ -40,7 +40,8 @@ const PlantScreen = () => {
                 {
                     text: "Supprimer",
                     onPress: () => {
-                        axios.delete(apiIp+`/api/plants/${plantId}`)
+                        console.log(plantId);
+                        axios.delete(apiIp + `/plants/${plantId}`)
                             .then(() => {
                                 setPlants(plants.filter(plant => plant.id !== plantId));
                             })
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
     plantCard: {
         elevation: 2,
         borderRadius: 8,
-        overflow: 'hidden',
+        // overflow: 'hidden',
     },
     plantImage: {
         height: 150,
