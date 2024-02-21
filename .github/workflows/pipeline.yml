@@ -36,3 +36,6 @@ jobs:
       - name: Lint with Checkstyle
         run: mvn checkstyle:checkstyle
         working-directory: ./arosaje-backend
+      - name: Build Docker image
+        run: docker build -t your-image-name:latest .
+        working-directory: ./arosaje-backend
