@@ -31,7 +31,7 @@ jobs:
         run: mvn -B package --file pom.xml -Dspring.profiles.active=test
         working-directory: ./arosaje-backend
       - name: Run tests
-        run: mvn test
+        run: mvn test --file pom.xml -Dspring.profiles.active=test
         working-directory: ./arosaje-backend
       - name: Lint with Checkstyle
         run: mvn checkstyle:checkstyle
