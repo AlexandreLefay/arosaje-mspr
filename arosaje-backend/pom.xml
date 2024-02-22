@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <scope>runtime</scope>
+<!--            <scope>runtime</scope>-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -130,24 +130,14 @@
                         </execution>
                     </executions>
                 </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.2.0</version>
-                    <configuration>
-                        <archive>
-                            <manifest>
-                                <addClasspath>true</addClasspath>
-                                <mainClass>fr.epsi.mspr.arosaje.ArosajeApplication</mainClass>
-                            </manifest>
-                        </archive>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
+
 </project>

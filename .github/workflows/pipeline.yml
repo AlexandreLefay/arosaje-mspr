@@ -37,5 +37,5 @@ jobs:
         run: mvn checkstyle:checkstyle
         working-directory: ./arosaje-backend
       - name: Build Docker image
-        run: docker build -t your-image-name:latest .
+        run: docker build -t arosaje-backend:latest .
         working-directory: ./arosaje-backend
